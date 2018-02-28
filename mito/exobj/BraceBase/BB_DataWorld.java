@@ -7,10 +7,8 @@ import java.util.Map;
 
 import com.mito.exobj.common.MyLogger;
 import com.mito.exobj.common.entity.EntityWrapperBB;
-import com.mito.exobj.network.BB_PacketProcessor;
-import com.mito.exobj.network.BB_PacketProcessor.Mode;
+import com.mito.exobj.network.DeletePacketProcessor;
 import com.mito.exobj.network.PacketHandler;
-import com.mito.exobj.utilities.MitoMath;
 
 import net.minecraft.util.IntHashMap;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -46,7 +44,7 @@ public class BB_DataWorld {
 			int i = MathHelper.floor_double(base.pos.xCoord / 16.0D);
 			int j = MathHelper.floor_double(base.pos.zCoord / 16.0D);
 
-			BB_DataChunk datachunk = BB_DataLists.getChunkDataNew(world, i, j);
+			BB_DataChunk datachunk = ChunkAndWorldManager.getChunkDataNew(world, i, j);
 
 			if (!this.braceBaseList.add(base)) {
 				MyLogger.info("can not add worldlist");
@@ -71,7 +69,7 @@ public class BB_DataWorld {
 		}
 		boolean ret = braceBaseList.remove(base);
 		if (!this.world.isRemote) {
-			PacketHandler.INSTANCE.sendToAll(new BB_PacketProcessor(Mode.DELETE, base));
+			PacketHandler.INSTANCE.sendToAll(new DeletePacketProcessor(base.BBID));
 		}
 		if (world.isRemote)
 			this.shouldUpdateRender = true;
@@ -111,8 +109,8 @@ public class BB_DataWorld {
 
 		for (int i1 = i; i1 <= j; ++i1) {
 			for (int j1 = k; j1 <= l; ++j1) {
-				if (BB_DataLists.isChunkExist(world, i1, j1)) {
-					BB_DataLists.getChunkDataNew(world, i1, j1).getEntitiesWithinAABBForEntity(boundingBox, arraylist);
+				if (ChunkAndWorldManager.isChunkExist(world, i1, j1)) {
+					ChunkAndWorldManager.getChunkDataNew(world, i1, j1).getEntitiesWithinAABBForEntity(boundingBox, arraylist);
 				}
 			}
 		}

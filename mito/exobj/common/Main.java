@@ -153,7 +153,7 @@ public class Main {
 									outStream.flush();
 									outStream.close();
 									String s = new String(outStream.toByteArray());
-									//System.out.println("file " + name + " " + s);
+									//System.out.println("file " + list + " " + s);
 
 									File file = new File(shapesDir, getFileName(name));
 									file.createNewFile();
@@ -166,8 +166,8 @@ public class Main {
 
 							/*
 							if (file != null) {
-								String name = file.getName();
-								File file2 = new File(shapesDir, name);
+								String list = file.getName();
+								File file2 = new File(shapesDir, list);
 								try {
 									file.renameTo(file2);
 								} catch (SecurityException e) {

@@ -2,7 +2,6 @@ package com.mito.exobj.common.block;
 
 import java.util.List;
 
-import com.mito.exobj.BraceBase.BB_GroupBase;
 import com.mito.exobj.common.Main;
 
 import net.minecraft.block.Block;
@@ -14,7 +13,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 public class BlockObjects extends BlockContainer {
@@ -29,7 +27,7 @@ public class BlockObjects extends BlockContainer {
 	@Override
 	public TileEntity createNewTileEntity(World world, int a) {
 		TileObjects tile = new TileObjects();
-		//tile.name = new BB_GroupBase(world, new Vec3d(1.0, 1.0, 1.0));
+		//tile.list = new BB_GroupBase(world, new Vec3d(1.0, 1.0, 1.0));
 		return tile;
 	}
 
@@ -37,7 +35,7 @@ public class BlockObjects extends BlockContainer {
 									float hitY, float hitZ) {
 		TileEntity tile = world.getTileEntity(new BlockPos(x, y, z));
 		if (tile != null) {
-			BB_GroupBase go = ((TileObjects) tile).name;
+			List go = ((TileObjects) tile).list;
 			if (go != null) {
 			} else {
 			}

@@ -1,6 +1,6 @@
 package com.mito.exobj.common.item;
 
-import com.mito.exobj.BraceBase.BB_DataLists;
+import com.mito.exobj.BraceBase.ChunkAndWorldManager;
 import com.mito.exobj.BraceBase.ExtraObject;
 import com.mito.exobj.BraceBase.Brace.Brace;
 import com.mito.exobj.client.BB_Key;
@@ -27,31 +27,14 @@ public class ItemBender extends ItemSet {
 
 	public ItemBender() {
 		super();
-		//this.setTextureName("exobj:bender");
 		this.setMaxDamage(0);
 		this.maxStackSize = 1;
-		this.setHasSubtypes(true);
 	}
 
 	@Override
 	public void nbtInit(NBTTagCompound nbt, ItemStack itemstack) {
 		super.nbtInit(nbt, itemstack);
 		nbt.setInteger("brace", -1);
-	}
-
-	public double getRayDistance(BB_Key key) {
-		return key.isAltPressed() ? 3.0 : 5.0;
-	}
-
-	public void snapDegree(RayTraceResult mop, ItemStack itemstack, World world, EntityPlayer player, BB_Key key, NBTTagCompound nbt) {
-		if (nbt.getBoolean("activated")) {
-			Vec3d set = new Vec3d(nbt.getDouble("setX"), nbt.getDouble("setY"), nbt.getDouble("setZ"));
-			MyUtil.snapByShiftKey(mop, set);
-		}
-	}
-
-	public boolean snapCenter() {
-		return false;
 	}
 
 	public boolean activate(World world, EntityPlayer player, ItemStack itemstack, RayTraceResult mop, NBTTagCompound nbt, BB_Key key) {
@@ -79,7 +62,7 @@ public class ItemBender extends ItemSet {
 	}
 
 	public void onActiveClick(World world, EntityPlayer player, ItemStack itemstack, RayTraceResult movingOP, Vec3d set, Vec3d end, NBTTagCompound nbt) {
-		ExtraObject base = BB_DataLists.getWorldData(world).getBraceBaseByID(nbt.getInteger("brace"));
+		ExtraObject base = ChunkAndWorldManager.getWorldData(world).getBraceBaseByID(nbt.getInteger("brace"));
 		if (base != null && base instanceof Brace) {
 			Brace brace = (Brace) base;
 			if (nbt.getBoolean("isPos")) {
@@ -104,7 +87,7 @@ public class ItemBender extends ItemSet {
 
 	@Override
 	public boolean drawHighLightBox(ItemStack itemstack, EntityPlayer player, float partialTicks, RayTraceResult mop) {
-		NBTTagCompound nbt = getTagCompound(itemstack);
+		NBTTagCompound nbt = getNBT(itemstack);
 		if (mop == null || !MyUtil.canClick(player.worldObj, Main.proxy.getKey(), mop))
 			return false;
 		Vec3d set = mop.hitVec;

@@ -23,29 +23,15 @@ public class ItemTofu extends ItemSet {
 
 	public byte key = 0;
 
-	/*
-	 * public static final String[] colorName = new String[] { "black", "red",
-	 * "green", "brown", "blue", "purple", "cyan", "silver", "gray", "pink",
-	 * "lime", "yellow", "lightBlue", "magenta", "orange", "white" }; public
-	 * static final String[] color_name = new String[] { "black", "red",
-	 * "green", "brown", "blue", "purple", "cyan", "silver", "gray", "pink",
-	 * "lime", "yellow", "light_blue", "magenta", "orange", "white" };
-	 */
 	public ItemTofu() {
 		super();
 		this.setMaxDamage(0);
-		// this.setTextureName("exobj:tofu");
 	}
 
 	@Override
 	public String getItemStackDisplayName(ItemStack itemstack) {
-		NBTTagCompound nbt = getTagCompound(itemstack);
-		return ("" + I18n.translateToLocal(this.getUnlocalizedNameInefficiently(itemstack) + ".name")).trim();
-	}
-
-	public double convToDoubleSize(int isize) {
-
-		return (double) isize * 0.05;
+		NBTTagCompound nbt = getNBT(itemstack);
+		return ("" + I18n.translateToLocal(this.getUnlocalizedNameInefficiently(itemstack) + ".list")).trim();
 	}
 
 	public Block getMaterial(ItemStack itemstack) {
@@ -61,7 +47,7 @@ public class ItemTofu extends ItemSet {
 	}
 
 	public ItemStack setMaterial(ItemStack itemstack, Block e) {
-		NBTTagCompound nbt = getTagCompound(itemstack);
+		NBTTagCompound nbt = getNBT(itemstack);
 		nbt.setInteger("material", Block.getIdFromBlock(e));
 		return itemstack;
 	}
@@ -75,17 +61,7 @@ public class ItemTofu extends ItemSet {
 		nbt.setInteger("brace", -1);
 	}
 
-	public double getRayDistance(BB_Key key) {
-		return key.isAltPressed() ? 3.0 : 5.0;
-	}
-
-	public void snapDegree(RayTraceResult mop, ItemStack itemstack, World world, EntityPlayer player, BB_Key key,
-						   NBTTagCompound nbt) {
-		if (nbt.getBoolean("activated")) {
-			Vec3d set = new Vec3d(nbt.getDouble("setX"), nbt.getDouble("setY"), nbt.getDouble("setZ"));
-			MyUtil.snapByShiftKey(mop, set);
-		}
-	}
+	public void snapDegree(RayTraceResult mop, ItemStack itemstack, World world, EntityPlayer player, BB_Key key){}
 
 	public boolean activate(World world, EntityPlayer player, ItemStack itemstack, RayTraceResult mop,
 							NBTTagCompound nbt, BB_Key key) {
@@ -129,7 +105,7 @@ public class ItemTofu extends ItemSet {
 				return false;
 			Vec3d set = mop.hitVec;
 			RenderHighLight rh = RenderHighLight.INSTANCE;
-			NBTTagCompound nbt = getTagCompound(itemStack);
+			NBTTagCompound nbt = getNBT(itemStack);
 			if (nbt.getBoolean("activated") && MyUtil.canClick(player.worldObj, Main.proxy.getKey(), mop)) {
 				Vec3d end = new Vec3d(nbt.getDouble("setX"), nbt.getDouble("setY"), nbt.getDouble("setZ"));
 				rh.drawBox(player, set, end, partialticks);

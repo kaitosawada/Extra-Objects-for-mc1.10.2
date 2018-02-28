@@ -65,9 +65,9 @@ public class Brace extends ModelObject {
 			int j = MathHelper.floor_double(this.pos.zCoord / 16.0D);
 			//if (!this.worldObj.isRemote) {
 
-			//BB_DataChunk ret = (BB_DataChunk) BB_DataLists.getWorldData(worldObj).coordToDataMapping.getValueByKey(ChunkCoordIntPair.chunkXZ2Int(i, j));
+			//BB_DataChunk ret = (BB_DataChunk) ChunkAndWorldManager.getWorldData(worldObj).coordToDataMapping.getValueByKey(ChunkCoordIntPair.chunkXZ2Int(i, j));
 			MyLogger.info("Im here(ID:" + this.BBID + ")  "
-					+ BB_DataLists.getWorldData(worldObj).braceBaseList.size() + " dead : " + this.isDead);
+					+ ChunkAndWorldManager.getWorldData(worldObj).braceBaseList.size() + " dead : " + this.isDead);
 			//}
 			debug = 0;
 		}*/
@@ -305,8 +305,8 @@ public class Brace extends ModelObject {
 		this.pos = p;
 	}
 
-	public void snap(RayTraceResult mop, boolean b) {
-		this.line.snap(mop, b);
+	public void snap(RayTraceResult mop) {
+		this.line.snap(mop);
 	}
 
 	@Override

@@ -4,16 +4,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.mito.exobj.client.render.BB_Render;
+import com.mito.exobj.network.DeletePacketProcessor;
 import org.apache.logging.log4j.Level;
 
 import com.mito.exobj.BraceBase.Brace.Brace;
 import com.mito.exobj.BraceBase.Brace.GuideBrace;
 import com.mito.exobj.BraceBase.Brace.Tofu;
 import com.mito.exobj.client.render.exorender.RenderObject;
-import com.mito.exobj.client.render.exorender.RenderGuideBrace;
 import com.mito.exobj.common.MyLogger;
-import com.mito.exobj.network.BB_PacketProcessor;
-import com.mito.exobj.network.BB_PacketProcessor.Mode;
 import com.mito.exobj.network.PacketHandler;
 
 import net.minecraft.nbt.NBTTagCompound;
@@ -42,7 +40,7 @@ public class BB_ResisteredList {
 	}
 
 	/**
-	 * Create a new instance of an entity in the world by using the entity name.
+	 * Create a new instance of an entity in the world by using the entity list.
 	 */
 	public static ExtraObject createExObjByName(String p_75620_0_, World p_75620_1_) {
 		ExtraObject iobj = null;
@@ -122,18 +120,18 @@ public class BB_ResisteredList {
 
 	static {
 		addMapping(Brace.class, "Brace", nextID++, new RenderObject());
-		addMapping(GuideBrace.class, "GuideBrace", nextID++, new RenderGuideBrace());
+		addMapping(GuideBrace.class, "GuideBrace", nextID++, new RenderObject());
 		addMapping(Tofu.class, "Tofu", nextID++, new RenderObject());
 	}
 
 	public static ExtraObject syncBraceBaseFromNBT(NBTTagCompound nbt, World world, int id) {
-		ExtraObject base = BB_DataLists.getWorldData(world).getBraceBaseByID(id);
+		ExtraObject base = ChunkAndWorldManager.getWorldData(world).getBraceBaseByID(id);
 		if (base != null) {
 			base.readFromNBT(nbt);
 			if (base.datachunk != null)
 				base.datachunk.modified();
 		} else {
-			PacketHandler.INSTANCE.sendToAll(new BB_PacketProcessor(Mode.DELETE, base));
+			PacketHandler.INSTANCE.sendToAll(new DeletePacketProcessor(base.BBID));
 			MyLogger.warn("Skipping Entity with id " + nbt.getString("id"));
 		}
 		return base;

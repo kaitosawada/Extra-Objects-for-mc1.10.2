@@ -1,12 +1,13 @@
 package com.mito.exobj.client;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.mito.exobj.common.main.mitoClientProxy;
+import com.mito.exobj.network.SyncPacketProcessor;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
 
-import com.mito.exobj.BraceBase.BB_GroupBase;
 import com.mito.exobj.client.render.BB_Render;
 import com.mito.exobj.BraceBase.BB_RenderHandler;
 import com.mito.exobj.BraceBase.BB_ResisteredList;
@@ -16,8 +17,6 @@ import com.mito.exobj.BraceBase.LoadClientWorldHandler;
 import com.mito.exobj.BraceBase.VBOHandler;
 import com.mito.exobj.BraceBase.Brace.Brace;
 import com.mito.exobj.common.Main;
-import com.mito.exobj.network.BB_PacketProcessor;
-import com.mito.exobj.network.BB_PacketProcessor.Mode;
 import com.mito.exobj.network.GroupPacketProcessor;
 import com.mito.exobj.network.GroupPacketProcessor.EnumGroupMode;
 import com.mito.exobj.network.PacketHandler;
@@ -27,8 +26,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 
-public class BB_SelectedGroup extends BB_GroupBase {
+public class BB_SelectedGroup {
 
+	public List<ExtraObject> list = new ArrayList<>();
 	public mitoClientProxy proxy;
 	public Vec3d set = new Vec3d(0, 0, 0);
 	public boolean activated = false;
@@ -179,9 +179,9 @@ public class BB_SelectedGroup extends BB_GroupBase {
 	}
 
 	public void applyProperty(Block tex, int color, String shape) {
-		for (int n = 0; n < this.list.size(); n++) {
-			if (this.list.get(n) instanceof Brace) {
-				Brace brace = ((Brace) this.list.get(n));
+		for (ExtraObject e : list) {
+			if (e instanceof Brace) {
+				Brace brace = ((Brace) e);
 				if (tex != null) {
 					brace.texture = tex;
 				}
@@ -195,15 +195,15 @@ public class BB_SelectedGroup extends BB_GroupBase {
 				} else {
 					brace.color = 0;
 				}
-				PacketHandler.INSTANCE.sendToServer(new BB_PacketProcessor(Mode.SYNC, this.list.get(n)));
+				PacketHandler.INSTANCE.sendToServer(new SyncPacketProcessor(e));
 			}
 		}
 	}
 
 	public void applyColor(int color) {
-		for (int n = 0; n < this.list.size(); n++) {
-			if (this.list.get(n) instanceof Brace) {
-				Brace brace = ((Brace) this.list.get(n));
+		for (ExtraObject e : list) {
+			if (e instanceof Brace) {
+				Brace brace = ((Brace) e);
 
 				if (color >= 0 && color < 16) {
 					brace.color = color;
@@ -211,7 +211,7 @@ public class BB_SelectedGroup extends BB_GroupBase {
 				} else {
 					brace.color = 0;
 				}
-				PacketHandler.INSTANCE.sendToServer(new BB_PacketProcessor(Mode.SYNC, this.list.get(n)));
+				PacketHandler.INSTANCE.sendToServer(new SyncPacketProcessor(e));
 			}
 		}
 	}
@@ -224,12 +224,12 @@ public class BB_SelectedGroup extends BB_GroupBase {
 	}
 
 	public void applySize(int isize) {
-		for (int n = 0; n < this.list.size(); n++) {
-			if (this.list.get(n) instanceof Brace) {
-				Brace brace = ((Brace) this.list.get(n));
+		for (ExtraObject e : list) {
+			if (e instanceof Brace) {
+				Brace brace = ((Brace) e);
 				brace.size = (double) isize * 0.05;
 				LoadClientWorldHandler.INSTANCE.data.shouldUpdateRender = true;
-				PacketHandler.INSTANCE.sendToServer(new BB_PacketProcessor(Mode.SYNC, this.list.get(n)));
+				PacketHandler.INSTANCE.sendToServer(new SyncPacketProcessor(e));
 			}
 		}
 	}
@@ -241,9 +241,9 @@ public class BB_SelectedGroup extends BB_GroupBase {
 			return (int) (((Brace) list.get(0)).size * 20);
 		} else {
 			int is = (int) (((Brace) list.get(0)).size * 20);
-			for (int n = 0; n < this.list.size(); n++) {
-				if (this.list.get(n) instanceof Brace) {
-					Brace brace = ((Brace) this.list.get(n));
+			for (ExtraObject e : list) {
+				if (e instanceof Brace) {
+					Brace brace = ((Brace) e);
 					if (is != (int) (brace.size * 20)) {
 						return -1;
 					}
@@ -254,23 +254,23 @@ public class BB_SelectedGroup extends BB_GroupBase {
 	}
 
 	public void applyRoll(int iroll) {
-		for (int n = 0; n < this.list.size(); n++) {
-			if (this.list.get(n) instanceof Brace) {
-				Brace brace = ((Brace) this.list.get(n));
+		for (ExtraObject e : list) {
+			if (e instanceof Brace) {
+				Brace brace = ((Brace) e);
 				brace.setRoll(iroll);
 				LoadClientWorldHandler.INSTANCE.data.shouldUpdateRender = true;
-				PacketHandler.INSTANCE.sendToServer(new BB_PacketProcessor(Mode.SYNC, this.list.get(n)));
+				PacketHandler.INSTANCE.sendToServer(new SyncPacketProcessor(e));
 			}
 		}
 	}
 
 	public void applyGroupSize(int isize) {
 		Vec3d c = getCenter();
-		for (int n = 0; n < this.list.size(); n++) {
-			ExtraObject brace = this.list.get(n);
+		for (ExtraObject e : list) {
+			ExtraObject brace = e;
 			brace.resize(c, (double) isize / this.size);
 			LoadClientWorldHandler.INSTANCE.data.shouldUpdateRender = true;
-			PacketHandler.INSTANCE.sendToServer(new BB_PacketProcessor(Mode.SYNC, this.list.get(n)));
+			PacketHandler.INSTANCE.sendToServer(new SyncPacketProcessor(e));
 
 		}
 		this.size = isize;
@@ -278,11 +278,11 @@ public class BB_SelectedGroup extends BB_GroupBase {
 
 	public void applyGroupRot(int irot) {
 		Vec3d c = getCenter();
-		for (int n = 0; n < this.list.size(); n++) {
-			ExtraObject brace = this.list.get(n);
+		for (ExtraObject e : list) {
+			ExtraObject brace = e;
 			brace.rotation(c, -this.rot + irot);
 			LoadClientWorldHandler.INSTANCE.data.shouldUpdateRender = true;
-			PacketHandler.INSTANCE.sendToServer(new BB_PacketProcessor(Mode.SYNC, this.list.get(n)));
+			PacketHandler.INSTANCE.sendToServer(new SyncPacketProcessor(e));
 
 		}
 		this.rot = irot;

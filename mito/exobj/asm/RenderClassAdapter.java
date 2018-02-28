@@ -20,7 +20,7 @@ public class RenderClassAdapter extends ClassVisitor implements Opcodes {
 
 		String srgMethod = FMLDeobfuscatingRemapper.INSTANCE.mapMethodName(name, name, desc);
 		String srgDesc = FMLDeobfuscatingRemapper.INSTANCE.mapMethodDesc(desc);
-		//MyLogger.warn("method : " + name + "  desc : " + srgDesc);
+		//MyLogger.warn("method : " + list + "  desc : " + srgDesc);
 		if (("renderEntities".equals(srgMethod) || "a".equals(srgMethod)) && "(Lnet/minecraft/entity/Entity;Lnet/minecraft/client/renderer/culling/ICamera;F)V".equals(srgDesc)) {
 			return new MethodAdapter(super.visitMethod(access, name, desc, signature, exceptions));
 		}

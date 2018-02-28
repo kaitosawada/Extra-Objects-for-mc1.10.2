@@ -100,7 +100,7 @@ public class BB_DataChunk {
 			base.datachunk = null;
 			base.removeFromWorld();
 		}
-		BB_DataWorld worldData = BB_DataLists.getWorldData(world);
+		BB_DataWorld worldData = ChunkAndWorldManager.getWorldData(world);
 		worldData.removeDataChunk(this);
 	}
 

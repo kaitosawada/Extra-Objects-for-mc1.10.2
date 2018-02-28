@@ -2,7 +2,7 @@ package com.mito.exobj.common.item;
 
 import java.util.List;
 
-import com.mito.exobj.BraceBase.BB_DataLists;
+import com.mito.exobj.BraceBase.ChunkAndWorldManager;
 import com.mito.exobj.BraceBase.ExtraObject;
 import com.mito.exobj.client.BB_Key;
 import com.mito.exobj.client.BB_SelectedGroup;
@@ -27,19 +27,17 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
-public class ItemSelectTool extends ItemBraceBase {
+public class ItemSelectTool extends ItemBraceBase implements IMouseWheel {
 
 	public ItemSelectTool() {
 		super();
-		//this.setTextureName("exobj:select");
-		//this.setMaxDamage(0);
 		this.setHasSubtypes(true);
 	}
 
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(ItemStack itemStack, World world, EntityPlayer player, EnumHand hand) {
 		if (world.isRemote) {
-			NBTTagCompound nbt = getTagCompound(itemStack);
+			NBTTagCompound nbt = getNBT(itemStack);
 			RayTraceResult movingOP = Minecraft.getMinecraft().objectMouseOver;
 			boolean flag = MyUtil.isBrace(movingOP);
 			BB_SelectedGroup sel = Main.proxy.sg;
@@ -103,7 +101,7 @@ public class ItemSelectTool extends ItemBraceBase {
 					Vec3d set = mop.hitVec;
 					if (MitoMath.subAbs(sel.set, set) < 500000) {
 						AxisAlignedBB aabb = MyUtil.createAABBByVec3d(sel.set, set);
-						List<ExtraObject> list = BB_DataLists.getWorldData(world).getExtraObjectWithAABB(aabb);
+						List<ExtraObject> list = ChunkAndWorldManager.getWorldData(world).getExtraObjectWithAABB(aabb);
 						//繧ｷ繝輔ヨ蜷梧凾謚ｼ縺励〒繧ｻ繝ｬ繧ｯ繝郁ｿｽ蜉�
 						if (player.isSneaking() || key.isControlPressed()) {
 							sel.addShift(list);
@@ -152,10 +150,6 @@ public class ItemSelectTool extends ItemBraceBase {
 		return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemStack);
 	}
 
-	public double getRayDistance(BB_Key key) {
-		return key.isAltPressed() ? 3.0 : 5.0;
-	}
-
 
 	@Override
 	public boolean drawHighLightBox(ItemStack itemStack, EntityPlayer player, float partialticks, RayTraceResult mop) {
@@ -199,4 +193,6 @@ public class ItemSelectTool extends ItemBraceBase {
 		}
 		return false;
 	}
+
+	public void snapDegree(RayTraceResult mop, ItemStack itemstack, World world, EntityPlayer player, BB_Key key) {}
 }

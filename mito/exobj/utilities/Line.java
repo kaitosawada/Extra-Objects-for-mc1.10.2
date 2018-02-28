@@ -97,34 +97,25 @@ public class Line implements ILineBrace {
 	}
 
 	@Override
-	public void snap(RayTraceResult mop, boolean b) {
-		if (b) {
-			double leng = MitoMath.subAbs(start, end);
-			if (leng < 1.5) {
-				double r = MitoMath.subAbs(start, mop.hitVec) / leng;
-				//absは絶対値なので厳密ではない
-				if (r < 0.3333) {
-					mop.hitVec = start;
-				} else if (r > 0.6666) {
-					mop.hitVec = end;
-				} else {
-					mop.hitVec = MitoMath.ratio_vector(start, end, 0.5);
-				}
+	public void snap(RayTraceResult mop) {
+		double leng = MitoMath.subAbs(start, end);
+		if (leng < 1.5) {
+			double r = MitoMath.subAbs(start, mop.hitVec) / leng;
+			//absは絶対値なので厳密ではない
+			if (r < 0.3333) {
+				mop.hitVec = start;
+			} else if (r > 0.6666) {
+				mop.hitVec = end;
 			} else {
-				if (MitoMath.subAbs(start, mop.hitVec) < 0.5) {
-					mop.hitVec = start;
-				} else if (MitoMath.subAbs(end, mop.hitVec) < 0.5) {
-					mop.hitVec = end;
-				} else if (MitoMath.subAbs(MitoMath.ratio_vector(start, end, 0.5), mop.hitVec) < 0.25) {
-					mop.hitVec = MitoMath.ratio_vector(start, end, 0.5);
-				}
+				mop.hitVec = MitoMath.ratio_vector(start, end, 0.5);
 			}
 		} else {
-			double r = MitoMath.subAbs(start, mop.hitVec) / MitoMath.subAbs(start, end);
-			if (r < 0.5) {
+			if (MitoMath.subAbs(start, mop.hitVec) < 0.5) {
 				mop.hitVec = start;
-			} else if (r > 0.5) {
+			} else if (MitoMath.subAbs(end, mop.hitVec) < 0.5) {
 				mop.hitVec = end;
+			} else if (MitoMath.subAbs(MitoMath.ratio_vector(start, end, 0.5), mop.hitVec) < 0.25) {
+				mop.hitVec = MitoMath.ratio_vector(start, end, 0.5);
 			}
 		}
 	}

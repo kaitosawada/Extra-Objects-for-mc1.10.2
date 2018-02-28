@@ -2,13 +2,12 @@ package com.mito.exobj.common.item;
 
 import java.util.List;
 
-import com.mito.exobj.BraceBase.BB_DataLists;
+import com.mito.exobj.BraceBase.ChunkAndWorldManager;
 import com.mito.exobj.BraceBase.BB_DataWorld;
 import com.mito.exobj.BraceBase.ExtraObject;
 import com.mito.exobj.BraceBase.Brace.GuideBrace;
 import com.mito.exobj.client.BB_Key;
 import com.mito.exobj.client.render.RenderHighLight;
-import com.mito.exobj.utilities.MyUtil;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -40,14 +39,14 @@ public class ItemRuler extends ItemSet {
 
 	public boolean activate(World world, EntityPlayer player, ItemStack itemstack, RayTraceResult movingOP, NBTTagCompound nbt, BB_Key key) {
 		if (key.isShiftPressed()) {
-			BB_DataWorld data = BB_DataLists.getWorldData(world);
+			BB_DataWorld data = ChunkAndWorldManager.getWorldData(world);
 			List<ExtraObject> list = data.braceBaseList;
 			for (int n = 0; n < list.size(); n++) {
 				ExtraObject base = list.get(n);
 				if (base instanceof GuideBrace) {
 					GuideBrace guide = (GuideBrace) base;
-					guide.setDead();
-					if (guide.name.equals(player.getDisplayName())) {
+					if (guide.name.equals(player.getDisplayNameString())) {
+						guide.setDead();
 					}
 				}
 			}
@@ -58,22 +57,11 @@ public class ItemRuler extends ItemSet {
 
 	@Override
 	public String getItemStackDisplayName(ItemStack itemstack) {
-		return ("" + net.minecraft.util.text.translation.I18n.translateToLocal(this.getUnlocalizedNameInefficiently(itemstack) + ".name")).trim();
+		return ("" + net.minecraft.util.text.translation.I18n.translateToLocal(this.getUnlocalizedNameInefficiently(itemstack) + ".list")).trim();
 	}
 
 	public int getDiv(ItemStack itemstack) {
 		return (itemstack.getItemDamage() & (16 - 1)) + 1;
-	}
-
-	public double getRayDistance(BB_Key key) {
-		return key.isAltPressed() ? 3.0 : 5.0;
-	}
-
-	public void snapDegree(RayTraceResult mop, ItemStack itemstack, World world, EntityPlayer player, BB_Key key, NBTTagCompound nbt) {
-		if (nbt.getBoolean("activated")) {
-			Vec3d set = new Vec3d(nbt.getDouble("setX"), nbt.getDouble("setY"), nbt.getDouble("setZ"));
-			MyUtil.snapByShiftKey(mop, set);
-		}
 	}
 
 	public void onActiveClick(World world, EntityPlayer player, ItemStack itemstack, RayTraceResult movingOP, Vec3d set, Vec3d end, NBTTagCompound nbt) {
@@ -84,7 +72,7 @@ public class ItemRuler extends ItemSet {
 
 	@Override
 	public boolean drawHighLightBox(ItemStack itemstack, EntityPlayer player, float partialTicks, RayTraceResult mop) {
-		NBTTagCompound nbt = getTagCompound(itemstack);
+		NBTTagCompound nbt = getNBT(itemstack);
 		if (mop == null)
 			return false;
 		Vec3d set = mop.hitVec;
@@ -101,7 +89,7 @@ public class ItemRuler extends ItemSet {
 
 	}
 
-	public boolean wheelEvent(EntityPlayer player, ItemStack stack, BB_Key key, int dwheel) {
+	/*public boolean wheelEvent(EntityPlayer player, ItemStack stack, BB_Key key, int dwheel) {
 		if (key.isShiftPressed()) {
 			int w = dwheel / 120;
 			int div = stack.getItemDamage() + w;
@@ -115,6 +103,5 @@ public class ItemRuler extends ItemSet {
 			return true;
 		}
 		return false;
-	}
-
+	}*/
 }

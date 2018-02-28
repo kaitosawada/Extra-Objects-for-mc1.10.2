@@ -1,6 +1,6 @@
 package com.mito.exobj.network;
 
-import com.mito.exobj.BraceBase.BB_DataLists;
+import com.mito.exobj.BraceBase.ChunkAndWorldManager;
 import com.mito.exobj.BraceBase.ExtraObject;
 import com.mito.exobj.BraceBase.Brace.Brace;
 import com.mito.exobj.client.render.exorender.BezierCurve;
@@ -43,7 +43,7 @@ public class BendPacketProcessor implements IMessage, IMessageHandler<BendPacket
 
 	@Override
 	public IMessage onMessage(BendPacketProcessor message, MessageContext ctx) {
-		ExtraObject base = BB_DataLists.getWorldData(Main.proxy.getClientWorld()).getBraceBaseByID(message.id);
+		ExtraObject base = ChunkAndWorldManager.getWorldData(Main.proxy.getClientWorld()).getBraceBaseByID(message.id);
 		if (base != null && base instanceof Brace) {
 			Brace brace = (Brace) base;
 			if (message.line) {
@@ -69,7 +69,7 @@ public class BendPacketProcessor implements IMessage, IMessageHandler<BendPacket
 					}
 				}
 			}
-			BB_DataLists.getWorldData(Main.proxy.getClientWorld()).shouldUpdateRender = true;
+			ChunkAndWorldManager.getWorldData(Main.proxy.getClientWorld()).shouldUpdateRender = true;
 		}
 		return null;
 	}

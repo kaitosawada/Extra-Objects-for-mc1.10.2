@@ -10,7 +10,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.chunk.Chunk;
 
-public class BB_DataLists {
+public class ChunkAndWorldManager {
 
 	public static List<Integer> Incomplist = new ArrayList<Integer>();
 	public static Map<WorldServer, BB_DataWorld> worldDataMap = new HashMap<WorldServer, BB_DataWorld>();
@@ -44,7 +44,7 @@ public class BB_DataLists {
 		if (chunk == null) {
 			return null;
 		}
-		return BB_DataLists.getChunkDataNew(chunk.getWorld(), chunk.xPosition, chunk.zPosition);
+		return ChunkAndWorldManager.getChunkDataNew(chunk.getWorld(), chunk.xPosition, chunk.zPosition);
 	}
 
 	public static BB_DataChunk getChunkDataNew(World world, int i, int j) {
@@ -52,7 +52,7 @@ public class BB_DataLists {
 		ret = getWorldData(world).coordToDataMapping.get(ChunkPos.asLong(i, j));
 		if (ret == null) {
 			//world.getChunkProvider().chunkExists(i, j);
-			ret = BB_DataLists.newDataChunk(world, i, j);
+			ret = ChunkAndWorldManager.newDataChunk(world, i, j);
 		}
 		return ret;
 	}
@@ -78,6 +78,6 @@ public class BB_DataLists {
 	}
 
 	public static boolean isChunkExist(World world, int i, int j) {
-		return BB_DataLists.getWorldData(world).coordToDataMapping.containsKey(ChunkPos.asLong(i, j));
+		return ChunkAndWorldManager.getWorldData(world).coordToDataMapping.containsKey(ChunkPos.asLong(i, j));
 	}
 }

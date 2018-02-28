@@ -86,11 +86,11 @@ public class LineLoop implements ILineBrace {
 	}
 
 	@Override
-	public void snap(RayTraceResult mop, boolean b) {
+	public void snap(RayTraceResult mop) {
 		List<Line> list = this.getSegments();
 		for (Line l : list) {
 			if (MitoMath.getLineNearPoint(l.start, l.end, mop.hitVec).getLength() < 0.01) {
-				l.snap(mop, b);
+				l.snap(mop);
 				return;
 			}
 		}

@@ -19,7 +19,7 @@ public interface ILineBrace {
 
 	void addCoordinate(double x, double y, double z);
 
-	void snap(RayTraceResult mop, boolean b);
+	void snap(RayTraceResult mop);
 
 	double getLength();
 

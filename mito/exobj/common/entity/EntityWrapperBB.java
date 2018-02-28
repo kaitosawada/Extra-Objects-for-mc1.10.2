@@ -57,7 +57,7 @@ public class EntityWrapperBB extends Entity {
 			s = "generic";
 		}
 
-		return I18n.translateToLocal("extra_object." + s + ".name");
+		return I18n.translateToLocal("extra_object." + s + ".list");
 	}
 
 	public EntityWrapperBB wrap(ExtraObject base) {

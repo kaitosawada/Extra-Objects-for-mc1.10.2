@@ -2,7 +2,7 @@ package com.mito.exobj.client.render;
 
 import org.lwjgl.opengl.GL11;
 
-import com.mito.exobj.BraceBase.BB_DataLists;
+import com.mito.exobj.BraceBase.ChunkAndWorldManager;
 import com.mito.exobj.BraceBase.ExtraObject;
 import com.mito.exobj.BraceBase.Brace.Brace;
 import com.mito.exobj.utilities.MitoMath;
@@ -308,7 +308,7 @@ public class RenderHighLight {
 	}
 
 	public void drawFakeBraceBend(EntityPlayer player, Vec3d end, NBTTagCompound nbt, double partialTicks) {
-		ExtraObject base = BB_DataLists.getWorldData(player.worldObj).getBraceBaseByID(nbt.getInteger("brace"));
+		ExtraObject base = ChunkAndWorldManager.getWorldData(player.worldObj).getBraceBaseByID(nbt.getInteger("brace"));
 
 		if (base != null && base instanceof Brace) {
 			Brace brace = (Brace) base;

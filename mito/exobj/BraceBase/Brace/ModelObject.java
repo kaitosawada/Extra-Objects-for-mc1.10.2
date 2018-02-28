@@ -6,16 +6,12 @@ import com.mito.exobj.common.Main;
 import com.mito.exobj.common.MyLogger;
 import com.mito.exobj.common.item.ItemBar;
 import com.mito.exobj.common.item.ItemBraceBase;
-import com.mito.exobj.network.BB_PacketProcessor;
-import com.mito.exobj.network.BB_PacketProcessor.Mode;
 import com.mito.exobj.network.PacketHandler;
+import com.mito.exobj.network.SyncPacketProcessor;
 import com.mito.exobj.utilities.Line;
 import net.minecraft.block.Block;
-import net.minecraft.block.state.BlockStateBase;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockRendererDispatcher;
-import net.minecraft.client.renderer.block.model.ModelManager;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -131,7 +127,7 @@ public class ModelObject extends ExtraObject {
 			this.texture = Block.getBlockFromItem(itemstack.getItem());
 			this.color = itemstack.getItemDamage() % 16;
 			this.updateRenderer();
-			PacketHandler.INSTANCE.sendToServer(new BB_PacketProcessor(Mode.SYNC, this));
+			PacketHandler.INSTANCE.sendToServer(new SyncPacketProcessor(this));
 			return true;
 		}
 		return false;
@@ -164,4 +160,7 @@ public class ModelObject extends ExtraObject {
 	public void updateModel() {
 	}
 
+	public boolean getSmoothShading() {
+		return true;
+	}
 }

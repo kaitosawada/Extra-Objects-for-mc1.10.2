@@ -222,38 +222,29 @@ public class BezierCurve implements ILineBrace {
 
 
 	@Override
-	public void snap(RayTraceResult mop, boolean b) {
+	public void snap(RayTraceResult mop) {
 		if (points == null || points.length == 0) {
 			return;
 		}
 		Vec3d end = points[points.length - 1];
-		if (b) {
-			double leng = MitoMath.subAbs(points[0], end);
-			if (leng < 1.5) {
-				double r = MitoMath.subAbs(points[0], mop.hitVec) / leng;
-				//absは絶対値なので厳密ではない
-				if (r < 0.3333) {
-					mop.hitVec = points[0];
-				} else if (r > 0.6666) {
-					mop.hitVec = end;
-				} else {
-					mop.hitVec = MitoMath.ratio_vector(points[0], end, 0.5);
-				}
+		double leng = MitoMath.subAbs(points[0], end);
+		if (leng < 1.5) {
+			double r = MitoMath.subAbs(points[0], mop.hitVec) / leng;
+			//absは絶対値なので厳密ではない
+			if (r < 0.3333) {
+				mop.hitVec = points[0];
+			} else if (r > 0.6666) {
+				mop.hitVec = end;
 			} else {
-				if (MitoMath.subAbs(points[0], mop.hitVec) < 0.5) {
-					mop.hitVec = points[0];
-				} else if (MitoMath.subAbs(end, mop.hitVec) < 0.5) {
-					mop.hitVec = end;
-				} else if (MitoMath.subAbs(MitoMath.ratio_vector(points[0], end, 0.5), mop.hitVec) < 0.25) {
-					mop.hitVec = MitoMath.ratio_vector(points[0], end, 0.5);
-				}
+				mop.hitVec = MitoMath.ratio_vector(points[0], end, 0.5);
 			}
 		} else {
-			double r = MitoMath.subAbs(points[0], mop.hitVec) / MitoMath.subAbs(points[0], end);
-			if (r < 0.5) {
+			if (MitoMath.subAbs(points[0], mop.hitVec) < 0.5) {
 				mop.hitVec = points[0];
-			} else if (r > 0.5) {
+			} else if (MitoMath.subAbs(end, mop.hitVec) < 0.5) {
 				mop.hitVec = end;
+			} else if (MitoMath.subAbs(MitoMath.ratio_vector(points[0], end, 0.5), mop.hitVec) < 0.25) {
+				mop.hitVec = MitoMath.ratio_vector(points[0], end, 0.5);
 			}
 		}
 	}

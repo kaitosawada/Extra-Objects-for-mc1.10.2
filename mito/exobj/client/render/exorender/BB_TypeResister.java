@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.mito.exobj.BraceBase.Brace.CubeJoint;
-import com.mito.exobj.client.render.loader.BB_LoadModel;
+import com.mito.exobj.BraceBase.BB_LoadModel;
 import com.mito.exobj.client.render.model.BB_Model;
 import com.mito.exobj.client.render.model.BB_Polygon;
 import com.mito.exobj.client.render.model.D_Ellipse;

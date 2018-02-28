@@ -10,12 +10,12 @@ public class TileObjectsRenderer extends TileEntitySpecialRenderer {
 	public void renderTileEntityAt(TileObjects te, double x, double y, double z, float partialTicks, int destroyStage) {
 		/*if (tile instanceof TileObjects) {
 			TileObjects to = (TileObjects) tile;
-			if (to.name != null) {
+			if (to.list != null) {
 				GL11.glPushMatrix();
 				GL11.glTranslated(x, y, z);
 				Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.locationBlocksTexture);
 				BB_RenderHandler.enableClient();
-				List<ExtraObject> list = to.name.list;
+				List<ExtraObject> list = to.list.list;
 
 				Minecraft.getMinecraft().entityRenderer.enableLightmap((double) part);
 				GL11.glTexParameterf(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);

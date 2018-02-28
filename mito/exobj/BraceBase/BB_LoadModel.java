@@ -1,4 +1,4 @@
-package com.mito.exobj.client.render.loader;
+package com.mito.exobj.BraceBase;
 
 import com.google.gson.stream.JsonReader;
 import com.mito.exobj.client.render.exorender.BB_TypeResister;
@@ -89,7 +89,7 @@ public class BB_LoadModel {
 			reader.beginObject();
 			while (reader.hasNext()) {
 				String name = reader.nextName();
-				if (name.equals("name")) {
+				if (name.equals("list")) {
 					typename = reader.nextString();
 					MyLogger.info("load " + typename);
 				} else if (name.equals("author")) {

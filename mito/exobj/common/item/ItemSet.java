@@ -23,10 +23,10 @@ public class ItemSet extends ItemBraceBase {
 
 	@Override
 	public EnumAction getItemUseAction(ItemStack itemstack) {
-		MyLogger.info("getItemUseAction: ");
-		return EnumAction.DRINK;
+		return EnumAction.BLOCK;
 	}
 
+	@Override
 	public void nbtInit(NBTTagCompound nbt, ItemStack itemstack) {
 		nbt.setBoolean("activated", false);
 		nbt.setDouble("setX", 0.0D);
@@ -34,6 +34,7 @@ public class ItemSet extends ItemBraceBase {
 		nbt.setDouble("setZ", 0.0D);
 	}
 
+	@Override
 	public void RightClick(ItemStack itemstack, World world, EntityPlayer player, RayTraceResult mop, BB_Key key) {
 		RayTraceResult mop1 = this.getMovingOPWithKey(itemstack, world, player, key, mop, 1.0);
 		NBTTagCompound nbt = itemstack.getTagCompound();
@@ -105,5 +106,13 @@ public class ItemSet extends ItemBraceBase {
 			this.nbtInit(nbt, itemstack);
 		}
 		return true;
+	}
+
+	public void snapDegree(RayTraceResult mop, ItemStack itemstack, World world, EntityPlayer player, BB_Key key) {
+		NBTTagCompound nbt = getNBT(itemstack);
+		if (nbt.getBoolean("activated")) {
+			Vec3d set = new Vec3d(nbt.getDouble("setX"), nbt.getDouble("setY"), nbt.getDouble("setZ"));
+			MyUtil.snapByShiftKey(mop, set);
+		}
 	}
 }

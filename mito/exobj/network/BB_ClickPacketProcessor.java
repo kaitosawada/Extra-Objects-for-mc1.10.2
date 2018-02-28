@@ -1,10 +1,9 @@
 package com.mito.exobj.network;
 
-import com.mito.exobj.BraceBase.BB_DataLists;
+import com.mito.exobj.BraceBase.ChunkAndWorldManager;
 import com.mito.exobj.BraceBase.BB_DataWorld;
 import com.mito.exobj.BraceBase.ExtraObject;
 
-import com.mito.exobj.common.MyLogger;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.EnumHand;
@@ -35,7 +34,7 @@ public class BB_ClickPacketProcessor implements IMessage, IMessageHandler<BB_Cli
 		try {
 			EntityPlayerMP player = ctx.getServerHandler().playerEntity;
 			World world = DimensionManager.getWorld(player.dimension);
-			BB_DataWorld data = BB_DataLists.getWorldData(world);
+			BB_DataWorld data = ChunkAndWorldManager.getWorldData(world);
 			ExtraObject base = data.getBraceBaseByID(message.id);
 			if (base != null && player != null) {
 				switch (message.mode) {

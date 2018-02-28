@@ -1,18 +1,14 @@
 package com.mito.exobj.BraceBase;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
 
 import com.mito.exobj.client.render.model.IDrawable;
 import com.mito.exobj.common.MyLogger;
-import com.mito.exobj.network.BB_PacketProcessor;
-import com.mito.exobj.network.BB_PacketProcessor.Mode;
 import com.mito.exobj.network.PacketHandler;
+import com.mito.exobj.network.SuggestPacketProcessor;
 import com.mito.exobj.utilities.Line;
-import com.mito.exobj.utilities.MitoMath;
 import com.mito.exobj.utilities.MyUtil;
 
 import net.minecraft.crash.CrashReport;
@@ -29,7 +25,6 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -60,7 +55,7 @@ public abstract class ExtraObject {
 	public ExtraObject(World world) {
 		this.worldObj = world;
 		this.BBID = nextID++;
-		this.dataworld = BB_DataLists.getWorldData(worldObj);
+		this.dataworld = ChunkAndWorldManager.getWorldData(worldObj);
 		if (dataworld == null) {
 			MyLogger.warn("bracebase data world is null");
 		}
@@ -81,7 +76,7 @@ public abstract class ExtraObject {
 				ret = dataworld.addBraceBase(this, false);
 			}
 			if (ret) {
-				PacketHandler.INSTANCE.sendToAll(new BB_PacketProcessor(Mode.SUGGEST, this));
+				PacketHandler.INSTANCE.sendToAll(new SuggestPacketProcessor(this));
 			}
 			return ret;
 		}

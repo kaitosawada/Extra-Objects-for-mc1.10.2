@@ -9,8 +9,10 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.util.List;
+
 public class TileObjects extends TileEntity {
-	public BB_GroupBase name = null;
+	public List<ExtraObject> list = null;
 	@SideOnly(Side.CLIENT)
 	public VBOList buffer = new VBOList();
 	public boolean shouldUpdateRender = true;
@@ -29,15 +31,15 @@ public class TileObjects extends TileEntity {
 			
 		}*/
 		NBTTagCompound nbt1 = taglist == null ? null : taglist.getCompoundTagAt(0);
-		//name = (BB_GroupBase) BB_ResisteredList.createExObjFromNBT(nbt1, worldObj);
+		//list = (BB_GroupBase) BB_ResisteredList.createExObjFromNBT(nbt1, worldObj);
 	}
 
 	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
 		NBTTagList taglist = new NBTTagList();
 		NBTTagCompound nbt1 = new NBTTagCompound();
-		if (name != null) {
-			//name.writeToNBTOptional(nbt1);
+		if (list != null) {
+			//list.writeToNBTOptional(nbt1);
 			taglist.appendTag(nbt1);
 			nbt.setTag("BB_Groups", taglist);
 		}
@@ -57,12 +59,12 @@ public class TileObjects extends TileEntity {
 	}*/
 
 	public void breakBrace() {
-		if (name != null) {
+		if (list != null) {
 			Vec3d v = new Vec3d(this.pos.getX(), this.pos.getY(), this.pos.getX());
-			for (ExtraObject base : name.list) {
+			for (ExtraObject base : list) {
 				ExtraObject eo1 = base.copy();
 				eo1.worldObj = this.worldObj;
-				eo1.dataworld = BB_DataLists.getWorldData(worldObj);
+				eo1.dataworld = ChunkAndWorldManager.getWorldData(worldObj);
 				eo1.addCoordinate(v);
 				eo1.addToWorld();
 			}

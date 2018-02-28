@@ -3,14 +3,13 @@ package com.mito.exobj.network;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.mito.exobj.BraceBase.BB_DataLists;
+import com.mito.exobj.BraceBase.ChunkAndWorldManager;
 import com.mito.exobj.BraceBase.BB_DataWorld;
 import com.mito.exobj.BraceBase.BB_ResisteredList;
 import com.mito.exobj.BraceBase.ExtraObject;
 import com.mito.exobj.common.Main;
 import com.mito.exobj.common.block.TileObjects;
 import com.mito.exobj.common.main.ResisterItem;
-import com.mito.exobj.utilities.MyUtil;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -66,7 +65,7 @@ public class GroupPacketProcessor implements IMessage, IMessageHandler<GroupPack
 	public IMessage onMessage(GroupPacketProcessor message, MessageContext ctx) {
 		EntityPlayerMP player = ctx.getServerHandler().playerEntity;
 		World world = DimensionManager.getWorld(player.dimension);
-		BB_DataWorld data = BB_DataLists.getWorldData(world);
+		BB_DataWorld data = ChunkAndWorldManager.getWorldData(world);
 		List<ExtraObject> list = new ArrayList<ExtraObject>();
 		for (int n : message.ids) {
 			ExtraObject base = data.getBraceBaseByID(n);

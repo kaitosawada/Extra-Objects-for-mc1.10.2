@@ -1,6 +1,9 @@
 package com.mito.exobj.common.item;
 
+import com.mito.exobj.common.MyLogger;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
@@ -24,7 +27,14 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 
-public abstract class ItemBraceBase extends Item {
+import javax.annotation.Nullable;
+
+/*
+①onItemUseとonItemRightClickをまとめる
+②標準パラメタ設定
+*/
+
+public abstract class ItemBraceBase extends Item implements ISnap {
 
 	public ItemBraceBase() {
 		super();
@@ -42,79 +52,16 @@ public abstract class ItemBraceBase extends Item {
 		return new ActionResult(EnumActionResult.SUCCESS, itemStackIn);
 	}
 
-	/*@Nullable
-	public ItemStack onItemUseFinish(ItemStack stack, World worldIn, EntityLivingBase entityLiving) {
-		MyLogger.info("onItemUseFinish: ");
-		return stack;
-	}*/
+	public void RightClick(ItemStack itemstack, World world, EntityPlayer player, RayTraceResult mop, BB_Key key) {}
 
+	@Override
 	public boolean isDamageable() {
 		return false;
 	}
 
+	@Override
 	public boolean showDurabilityBar(ItemStack stack) {
 		return false;
-	}
-/*
-	@Override
-	public void onPlayerStoppedUsing(ItemStack stack, World worldIn, EntityLivingBase entityLiving, int timeLeft) {
-
-		NBTTagCompound nbt = stack.getTagCompound();
-		if (worldIn.isRemote) {
-			//PacketHandler.INSTANCE.sendToServer(new ItemUsePacketProcessor(Main.proxy.getKey(), ((EntityPlayer)entityLiving)));
-		}
-		entityLiving.resetActiveHand();
-	}*/
-
-	public void RightClick(ItemStack itemstack, World world, EntityPlayer player, RayTraceResult mop, BB_Key key) {
-
-	}
-
-	public RayTraceResult getMovingOPWithKey(ItemStack itemstack, World world, EntityPlayer player, BB_Key key, RayTraceResult mop, double partialticks) {
-		NBTTagCompound nbt = this.getNBT(itemstack);
-
-		if (mop != null && MyUtil.canClick(world, key, mop)) {
-			if (!key.isControlPressed()) {
-				mop = this.snap(mop, itemstack, world, player, key, nbt);
-			}
-			if (key.isShiftPressed()) {
-				this.snapDegree(mop, itemstack, world, player, key, nbt);
-			}
-		}
-
-		return mop;
-	}
-
-	public double getRayDistance(BB_Key key) {
-		return 5.0;
-	}
-
-	public RayTraceResult snap(RayTraceResult mop, ItemStack itemstack, World world, EntityPlayer player, BB_Key key, NBTTagCompound nbt) {
-		if (mop.typeOfHit == RayTraceResult.Type.BLOCK) {
-			this.snapBlock(mop, itemstack, world, player, key);
-		} else if (mop.typeOfHit == RayTraceResult.Type.ENTITY && mop.entityHit != null && mop.entityHit instanceof EntityWrapperBB) {
-			this.snapBraceBase(mop, itemstack, world, player, key);
-		}
-		return mop;
-	}
-
-	public void snapBlock(RayTraceResult mop, ItemStack itemstack, World world, EntityPlayer player, BB_Key key) {
-		MyUtil.snapBlock(mop);
-	}
-
-	public void snapBraceBase(RayTraceResult mop, ItemStack itemstack, World world, EntityPlayer player, BB_Key key) {
-		//各BraceBaseに振り分け用関数を用意
-		if (((EntityWrapperBB) mop.entityHit).base instanceof Brace) {
-			Brace brace = (Brace) ((EntityWrapperBB) mop.entityHit).base;
-			brace.snap(mop, this.snapCenter());
-		}
-	}
-
-	public void snapDegree(RayTraceResult mop, ItemStack itemstack, World world, EntityPlayer player, BB_Key key, NBTTagCompound nbt) {
-	}
-
-	public boolean snapCenter() {
-		return true;
 	}
 
 	public boolean drawHighLightBox(ItemStack itemstack, EntityPlayer player, float partialTick, RayTraceResult mop) {
@@ -153,19 +100,6 @@ public abstract class ItemBraceBase extends Item {
 			}
 		}
 		return false;
-	}
-
-	public boolean wheelEvent(EntityPlayer player, ItemStack stack, BB_Key key, int dwheel) {
-		return false;
-	}
-
-	public NBTTagCompound getTagCompound(ItemStack stack) {
-		NBTTagCompound nbt = stack.getTagCompound();
-		if (nbt == null) {
-			nbt = new NBTTagCompound();
-			stack.setTagCompound(nbt);
-		}
-		return nbt;
 	}
 
 }

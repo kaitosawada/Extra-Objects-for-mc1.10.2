@@ -4,8 +4,6 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 import com.mito.exobj.common.MyLogger;
@@ -29,7 +27,7 @@ public class LoadWorldHandler {
 	}
 
 	public Map getMap() {
-		return BB_DataLists.worldDataMap;
+		return ChunkAndWorldManager.worldDataMap;
 	}
 
 	public void onLoadWorld(WorldEvent.Load e) {
@@ -44,10 +42,10 @@ public class LoadWorldHandler {
 	}
 
 	public void onChunkDataSave(ChunkDataEvent.Save e) {
-		if (!BB_DataLists.existChunkData(e.getChunk())) {
+		if (!ChunkAndWorldManager.existChunkData(e.getChunk())) {
 			return;
 		}
-		onChunkDataSave(e.getWorld(), BB_DataLists.getChunkDataNew(e.getChunk()));
+		onChunkDataSave(e.getWorld(), ChunkAndWorldManager.getChunkDataNew(e.getChunk()));
 	}
 
 	public void onChunkDataSave(World world, BB_DataChunk chunkData) {
@@ -127,7 +125,7 @@ public class LoadWorldHandler {
 	}
 
 	public void onWorldTickEvent(TickEvent.WorldTickEvent e) {
-		BB_DataWorld data = BB_DataLists.getWorldData(e.world);
+		BB_DataWorld data = ChunkAndWorldManager.getWorldData(e.world);
 		data.onUpDate();
 		/*for(BB_DataChunk chunk : data.coordToDataMapping.values()){
 			if(!e.world.getChunkProvider().chunkExists(chunk.xPosition, chunk.zPosition)){
@@ -143,10 +141,10 @@ public class LoadWorldHandler {
 	}
 
 	public void onChunkUnload(ChunkEvent.Unload e) {
-		if (!BB_DataLists.existChunkData(e.getChunk())) {
+		if (!ChunkAndWorldManager.existChunkData(e.getChunk())) {
 			return;
 		}
-		BB_DataChunk datachunk = BB_DataLists.getChunkDataNew(e.getChunk());
+		BB_DataChunk datachunk = ChunkAndWorldManager.getChunkDataNew(e.getChunk());
 		onChunkDataSave(e.getWorld(), datachunk);
 		datachunk.remove();
 	}

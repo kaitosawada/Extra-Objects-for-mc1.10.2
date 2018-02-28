@@ -11,12 +11,16 @@ public class PacketHandler {
 
 
 	public static void init() {
+		INSTANCE.registerMessage(AddPacketProcessor.class, AddPacketProcessor.class, nex++, Side.CLIENT);
+		INSTANCE.registerMessage(DeletePacketProcessor.class, DeletePacketProcessor.class, nex++, Side.CLIENT);
+		INSTANCE.registerMessage(SuggestPacketProcessor.class, SuggestPacketProcessor.class, nex++, Side.CLIENT);
+		INSTANCE.registerMessage(SyncPacketProcessor.class, SyncPacketProcessor.class, nex++, Side.CLIENT);
+		INSTANCE.registerMessage(SyncPacketProcessor.class, SyncPacketProcessor.class, nex++, Side.SERVER);
+		INSTANCE.registerMessage(RequestChunkPacketProcessor.class, RequestChunkPacketProcessor.class, nex++, Side.SERVER);
+		INSTANCE.registerMessage(RequestPacketProcessor.class, RequestPacketProcessor.class, nex++, Side.SERVER);
 
-		INSTANCE.registerMessage(ItemUsePacketProcessor.class, ItemUsePacketProcessor.class, nex++, Side.SERVER);
 		INSTANCE.registerMessage(ItemBarPacketProcessor.class, ItemBarPacketProcessor.class, nex++, Side.SERVER);
 		INSTANCE.registerMessage(BendPacketProcessor.class, BendPacketProcessor.class, nex++, Side.CLIENT);
-		INSTANCE.registerMessage(BB_PacketProcessor.class, BB_PacketProcessor.class, nex++, Side.SERVER);
-		INSTANCE.registerMessage(BB_PacketProcessor.class, BB_PacketProcessor.class, nex++, Side.CLIENT);
 		INSTANCE.registerMessage(BB_ClickPacketProcessor.class, BB_ClickPacketProcessor.class, nex++, Side.SERVER);
 		INSTANCE.registerMessage(GroupPacketProcessor.class, GroupPacketProcessor.class, nex++, Side.SERVER);
 	}

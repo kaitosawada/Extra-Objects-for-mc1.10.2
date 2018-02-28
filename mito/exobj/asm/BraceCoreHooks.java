@@ -2,7 +2,7 @@ package com.mito.exobj.asm;
 
 import java.util.List;
 
-import com.mito.exobj.BraceBase.BB_DataLists;
+import com.mito.exobj.BraceBase.ChunkAndWorldManager;
 import com.mito.exobj.BraceBase.ExtraObject;
 import com.mito.exobj.common.MyLogger;
 import com.mito.exobj.utilities.Line;
@@ -28,7 +28,7 @@ public class BraceCoreHooks {
 
 	public static void getCollisionHook(World world, AxisAlignedBB aabb, List collidingBoundingBoxes, @Nullable Entity entity) {
 		double d0 = 0.25D;
-		List<ExtraObject> list = BB_DataLists.getWorldData(world).getExtraObjectWithAABB(aabb);
+		List<ExtraObject> list = ChunkAndWorldManager.getWorldData(world).getExtraObjectWithAABB(aabb);
 		for (ExtraObject base : list) {
 			base.addCollisionBoxesToList(world, aabb, collidingBoundingBoxes, entity);
 		}
@@ -59,7 +59,7 @@ public class BraceCoreHooks {
 	public static RayTraceResult rayTraceBrace(EntityLivingBase player, Vec3d set, Vec3d end, double partialticks) {
 		World world = player.worldObj;
 		RayTraceResult m = null;
-		List list = BB_DataLists.getWorldData(world).getExtraObjectWithAABB(MyUtil.createAABBByVec3d(set, end));
+		List list = ChunkAndWorldManager.getWorldData(world).getExtraObjectWithAABB(MyUtil.createAABBByVec3d(set, end));
 		double l = 999.0D;
 		for (int n = 0; n < list.size(); n++) {
 			if (list.get(n) instanceof ExtraObject) {
@@ -69,7 +69,7 @@ public class BraceCoreHooks {
 					double l2 = MitoMath.subAbs(line.start, set);
 					if (l2 < l) {
 						l = l2;
-						m = new RayTraceResult(BB_DataLists.getWorldData(world).wrapper.wrap(base), line.end);
+						m = new RayTraceResult(ChunkAndWorldManager.getWorldData(world).wrapper.wrap(base), line.end);
 					}
 				}
 			}

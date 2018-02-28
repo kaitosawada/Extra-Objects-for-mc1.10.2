@@ -26,11 +26,11 @@ public class CollisionClassAdapter extends ClassVisitor implements Opcodes {
 	}
 /*
 	@Override
-	public FieldVisitor visitField(int access, String name, String desc,
+	public FieldVisitor visitField(int access, String list, String desc,
 								   String signature, Object value) {
-		MyLogger.warn("method : " + name + "  desc : " + desc);
+		MyLogger.warn("method : " + list + "  desc : " + desc);
 		if (cv != null) {
-			return cv.visitField(access, name, desc, signature, value);
+			return cv.visitField(access, list, desc, signature, value);
 		}
 		return null;
 	}*/

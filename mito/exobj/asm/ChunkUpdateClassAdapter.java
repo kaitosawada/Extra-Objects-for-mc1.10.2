@@ -33,15 +33,15 @@ public class ChunkUpdateClassAdapter extends ClassVisitor implements Opcodes {
 		return super.visitMethod(access, name, desc, signature, exceptions);
 	}
 
-	@Override
-	public FieldVisitor visitField(int access, String name, String desc,
+	/*@Override
+	public FieldVisitor visitField(int access, String list, String desc,
 								   String signature, Object value) {
-		MyLogger.warn("method : " + name + "  desc : " + desc + "  signature : " + signature);
+		MyLogger.warn("method : " + list + "  desc : " + desc + "  signature : " + signature);
 		if (cv != null) {
-			return cv.visitField(access, name, desc, signature, value);
+			return cv.visitField(access, list, desc, signature, value);
 		}
 		return null;
-	}
+	}*/
 
 	public static class MethodAdapter extends MethodVisitor {
 		public MethodAdapter(MethodVisitor mv) {

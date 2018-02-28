@@ -199,7 +199,7 @@ public class MyUtil {
 
 		World world = player.worldObj;
 		BB_RayTraceResult m = null;
-		List list = BB_DataLists.getWorldData(world).getBraceBaseWithAABB(MitoUtil.createAABBByVec3d(set, end));
+		List list = ChunkAndWorldManager.getWorldData(world).getBraceBaseWithAABB(MitoUtil.createAABBByVec3d(set, end));
 
 		double l = 999.0D;
 		for (int n = 0; n < list.size(); n++) {
