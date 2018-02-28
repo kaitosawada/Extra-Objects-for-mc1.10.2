@@ -143,11 +143,11 @@ public class BB_Polygon implements IDrawBrace, IDrawable {
 	}
 
 	@Override
-	public void drawVBOIIcon(CreateVertexBufferObject c, TextureAtlasSprite iicon) {
+	public void drawVBOIIcon(CreateVertexBufferObject c, TextureAtlasSprite iicon, Vec3d pos) {
 		List<Triangle> arrayTriangle = MyUtil.decomposeTexture(this);
 		//List<Triangle> arrayTriangle = MyUtil.decomposePolygon(this.line);
 		for (Triangle triangle : arrayTriangle) {
-			triangle.drawIcon(c, iicon, Triangle.EnumFace.OBVERSE);
+			triangle.drawIcon(c, iicon, Triangle.EnumFace.OBVERSE, pos);
 		}
 	}
 

@@ -14,11 +14,12 @@ import com.mito.exobj.BraceBase.BB_EventHandler;
 
 import com.mito.exobj.client.gui.GuiHandler;
 import com.mito.exobj.common.entity.EntityWrapperBB;
+import com.mito.exobj.common.main.ConfigManager;
 import com.mito.exobj.common.main.ResisterItem;
+import com.mito.exobj.common.main.mitoCommonProxy;
 import com.mito.exobj.network.PacketHandler;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -37,14 +38,16 @@ public class Main {
 	public static final String MODID = "mito_extra_objects";
 	public static final String MODNAME = "Extra Objects";
 	public static final String VERSION = "1.0.0";
+	public static final String MOD_ACCEPTED_MC_VERSIONS = "[1.10,1.10.2]";
 	public static boolean debug = false;
+	public static boolean quality = false;
 
 	public static final CreativeTabs tab = new CreativeTabMito("CreativeTabExObj");
 
 	@Mod.Instance(Main.MODID)
 	public static Main INSTANCE;
 
-	@SidedProxy(clientSide = "com.mito.exobj.client.mitoClientProxy", serverSide = "com.mito.exobj.common.mitoCommonProxy")
+	@SidedProxy(clientSide = "com.mito.exobj.common.main.mitoClientProxy", serverSide = "com.mito.exobj.common.main.mitoCommonProxy")
 	public static mitoCommonProxy proxy;
 	//public static boolean vampSwitch = false;
 
@@ -59,8 +62,6 @@ public class Main {
 	//configuration
 	public File modelDir;
 	public File shapesDir;
-	//public File GroupsDir;
-	//public File ObjsDir;
 	public File source;
 
 	@Mod.EventHandler
@@ -69,9 +70,10 @@ public class Main {
 			resisterFiles(event);
 		}
 		proxy.preInit();
-		ResisterItem.preinit();
+		ResisterItem.preinit(event);
 		PacketHandler.init();
 		debug = ConfigManager.debug();
+		quality = ConfigManager.quality();
 	}
 
 	@Mod.EventHandler

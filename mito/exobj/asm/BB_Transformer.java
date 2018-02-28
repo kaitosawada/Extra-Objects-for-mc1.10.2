@@ -1,6 +1,8 @@
 package com.mito.exobj.asm;
 
 import net.minecraft.client.renderer.EntityRenderer;
+import net.minecraft.client.renderer.chunk.RenderChunk;
+import net.minecraft.world.World;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.ClassWriter;
@@ -23,22 +25,24 @@ public class BB_Transformer implements IClassTransformer, Opcodes {
 	private static final String TARGET_CLASS_NAME = "net.minecraft.world.World";
 	private static final String TARGET_CLASS_NAME2 = "net.minecraft.client.renderer.RenderGlobal";
 	public static final String TARGET_CLASS_NAME3 = "net.minecraft.client.renderer.EntityRenderer";
-	public static String name1 = "";
+	public static final String TARGET_CLASS_NAME4 = "net.minecraft.client.renderer.chunk.RenderChunk";
 
 	@Override
 	public byte[] transform(String name, String transformedName, byte[] data) {
 
+		World w;
 		if (transformedName.equals(TARGET_CLASS_NAME)) {
 			try {
-				return transformRender(data, name, new TransCollision());
+				ClassReader cr = new ClassReader(data);
+				ClassWriter cw = new ClassWriter(1);
+				ClassVisitor cv = new CollisionClassAdapter(ASM4, cw);
+				cr.accept(cv, 0);
+				return cw.toByteArray();
 			} catch (Exception e) {
 				throw new RuntimeException("failed : BraceCollisionTransformer loading", e);
 			}
 		} else if (transformedName.equals(TARGET_CLASS_NAME2)) {
 			try {
-				//return transformRender(data, name, new TransRender());
-				name1 = name;
-				EntityRenderer r;
 				ClassReader cr = new ClassReader(data);
 				ClassWriter cw = new ClassWriter(1);
 				ClassVisitor cv = new RenderClassAdapter(ASM4, cw);
@@ -49,9 +53,6 @@ public class BB_Transformer implements IClassTransformer, Opcodes {
 			}
 		} else if (transformedName.equals(TARGET_CLASS_NAME3)) {
 			try {
-				//return transformRender(data, name, new TransMouseOver());
-				name1 = name;
-				EntityRenderer r;
 				ClassReader cr = new ClassReader(data);
 				ClassWriter cw = new ClassWriter(1);
 				ClassVisitor cv = new MouseOverClassAdapter(ASM4, cw);
@@ -60,37 +61,17 @@ public class BB_Transformer implements IClassTransformer, Opcodes {
 			} catch (Exception e) {
 				throw new RuntimeException("failed : BraceRayTraceTransformer loading", e);
 			}
-		}
-		return data;
-	}
-
-	private byte[] transformRender(byte[] data, String name, TransInfo ti) {
-		ClassNode cnode = new ClassNode();
-		ClassReader reader = new ClassReader(data);
-		reader.accept(cnode, 0);
-
-		MethodNode mnode = null;
-		for (MethodNode curMnode : cnode.methods) {
-			String srgClass = FMLDeobfuscatingRemapper.INSTANCE.map(name);
-			String srgMethod = FMLDeobfuscatingRemapper.INSTANCE.mapMethodName(name, curMnode.name, curMnode.desc);
-			String srgDesc = FMLDeobfuscatingRemapper.INSTANCE.mapMethodDesc(curMnode.desc);
-			//MyLogger.info("transform" + srgMethod + srgDesc);
-			if ((ti.targetMethodName.equals(srgMethod) || ti.targetDeobfMethodName.equals(srgMethod)) && ti.targetMethoddesc.equals(srgDesc)) {
-				mnode = curMnode;
-				break;
+		} else if (transformedName.equals(TARGET_CLASS_NAME4)) {
+			try {
+				ClassReader cr = new ClassReader(data);
+				ClassWriter cw = new ClassWriter(1);
+				ClassVisitor cv = new ChunkUpdateClassAdapter(ASM4, cw);
+				cr.accept(cv, 0);
+				return cw.toByteArray();
+			} catch (Exception e) {
+				throw new RuntimeException("failed : BraceRayTraceTransformer loading", e);
 			}
 		}
-
-		if (mnode != null) {
-			ti.transform(mnode);
-
-			ClassWriter cw = new ClassWriter(0);
-			cnode.accept(cw);
-			data = cw.toByteArray();
-			MyLogger.info("transforming of the code succeeded");
-		}
-
 		return data;
 	}
-
 }

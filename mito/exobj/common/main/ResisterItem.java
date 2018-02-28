@@ -11,10 +11,14 @@ import com.mito.exobj.common.item.ItemSelectTool;
 import com.mito.exobj.common.item.ItemTofu;
 
 import net.minecraft.block.Block;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.RecipeSorter;
 
@@ -34,7 +38,7 @@ public class ResisterItem {
 
 	public static Block BlockObjects;
 
-	static public void preinit() {
+	static public void preinit(FMLPreInitializationEvent event) {
 		//ItemFakeBlock = new ItemFakeBlock().setUnlocalizedName("ItemFakeBlock");
 		ItemSelectTool = new ItemSelectTool().setUnlocalizedName("ItemSelectTool").setCreativeTab(Main.tab);
 		ItemBrace = new ItemBrace().setUnlocalizedName("ItemBrace").setCreativeTab(Main.tab);
@@ -45,26 +49,26 @@ public class ResisterItem {
 		ItemRuler = new ItemRuler().setUnlocalizedName("ItemRuler").setCreativeTab(Main.tab);
 		ItemTofu = new ItemTofu().setUnlocalizedName("ItemTofu").setCreativeTab(Main.tab);
 
-		//BlockObjects = new BlockObjects();
+		GameRegistry.register(ItemBar, new ResourceLocation(Main.MODID, "ItemBar"));
+		GameRegistry.register(ItemBender, new ResourceLocation(Main.MODID, "ItemBender"));
+		GameRegistry.register(ItemRuler, new ResourceLocation(Main.MODID, "ItemRuler"));
+		GameRegistry.register(ItemSelectTool, new ResourceLocation(Main.MODID, "ItemSelectTool"));
+		GameRegistry.register(ItemBrace, new ResourceLocation(Main.MODID, "ItemBrace"));
+		GameRegistry.register(ItemTofu, new ResourceLocation(Main.MODID, "ItemTofu"));
 
-		GameRegistry.registerItem(ItemBar, "ItemBar");
-		GameRegistry.registerItem(ItemBender, "ItemBender");
-		//GameRegistry.registerItem(ItemWall, "ItemWall");
-		GameRegistry.registerItem(ItemRuler, "ItemRuler");
-		//GameRegistry.registerItem(ItemBlockSetter, "ItemBlockSetter");
-		GameRegistry.registerItem(ItemSelectTool, "ItemSelectTool");
-		GameRegistry.registerItem(ItemBrace, "ItemBrace");
-		/*GameRegistry.registerItem(ItemFakeBlock, "ItemFakeBlock");
-		GameRegistry.registerItem(ItemLinearMotor, "ItemLinearMotor");
-		GameRegistry.registerItem(ItemRedCable, "ItemRedCable");*/
-		GameRegistry.registerItem(ItemTofu, "ItemTofu");
-
-		//GameRegistry.registerBlock(BlockObjects, "BlockObjects");
+		if(event.getSide().isClient()){
+			ModelLoader.setCustomModelResourceLocation(ItemBar, 0, new ModelResourceLocation(ItemBar.getRegistryName(), "inventory"));
+			ModelLoader.setCustomModelResourceLocation(ItemBender, 0, new ModelResourceLocation(ItemBender.getRegistryName(), "inventory"));
+			ModelLoader.setCustomModelResourceLocation(ItemRuler, 0, new ModelResourceLocation(ItemRuler.getRegistryName(), "inventory"));
+			ModelLoader.setCustomModelResourceLocation(ItemSelectTool, 0, new ModelResourceLocation(ItemSelectTool.getRegistryName(), "inventory"));
+			ModelLoader.setCustomModelResourceLocation(ItemBrace, 0, new ModelResourceLocation(ItemBrace.getRegistryName(), "inventory"));
+			ModelLoader.setCustomModelResourceLocation(ItemTofu, 0, new ModelResourceLocation(ItemTofu.getRegistryName(), "inventory"));
+		}
 	}
 
 	static public void RegisterRecipe() {
 
-		RecipeSorter.register("exobj;shapeless", MitoShapelessRecipe.class, RecipeSorter.Category.SHAPELESS, "after:minecraft:shapeless");
+		RecipeSorter.register(Main.MODID + ";shapeless", MitoShapelessRecipe.class, RecipeSorter.Category.SHAPELESS, "after:minecraft:shapeless");
 
 		GameRegistry.addRecipe(new MitoShapedRecipe());
 		GameRegistry.addRecipe(new MitoShapelessRecipe());

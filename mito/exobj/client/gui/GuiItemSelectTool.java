@@ -13,7 +13,7 @@ import net.minecraft.util.ResourceLocation;
 
 public class GuiItemSelectTool extends GuiScreen {
 
-	private static final ResourceLocation texture = new ResourceLocation("exobj:textures/gui/transform.png");
+	private static final ResourceLocation texture = new ResourceLocation(Main.MODID + ":textures/gui/transform.png");
 	private BB_SelectedGroup sel = Main.proxy.sg;
 	protected int xSize = 176;
 	protected int ySize = 166;

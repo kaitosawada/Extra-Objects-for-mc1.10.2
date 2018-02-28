@@ -6,9 +6,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 
-/**
- * Created by Furia on 14/05/24.
- */
 public class BB_KeyBinding extends KeyBinding {
 
 	private static final int dumyKeyCode = -200;

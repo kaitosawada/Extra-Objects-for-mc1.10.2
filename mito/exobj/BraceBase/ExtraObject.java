@@ -26,6 +26,8 @@ import net.minecraft.nbt.NBTTagFloat;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.ReportedException;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
@@ -308,13 +310,24 @@ public abstract class ExtraObject {
 	}
 
 	@SideOnly(Side.CLIENT)
-	public float getBrightnessForRender(float i, double x, double y, double z) {
-		return 0;
+	public int getBrightnessForRender(float i, double x, double y, double z) {
+
+		BlockPos.MutableBlockPos blockPos = new BlockPos.MutableBlockPos(MathHelper.floor_double(x), 0, MathHelper.floor_double(z));
+
+		if (this.worldObj.isBlockLoaded(blockPos))
+		{
+			blockPos.setY(MathHelper.floor_double(y));
+			return this.worldObj.getCombinedLight(blockPos, 0);
+		}
+		else
+		{
+			return 0;
+		}
 	}
 
 	@SideOnly(Side.CLIENT)
-	public float getBrightnessForRender(float i) {
-		return getBrightnessForRender(i, 0, 0, 0);
+	public int getBrightnessForRender(float i) {
+		return getBrightnessForRender(i, pos.xCoord, pos.yCoord, pos.zCoord);
 	}
 
 	public boolean isBind(ExtraObject brace) {

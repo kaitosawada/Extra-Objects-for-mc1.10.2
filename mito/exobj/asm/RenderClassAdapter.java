@@ -1,5 +1,7 @@
 package com.mito.exobj.asm;
 
+import com.mito.exobj.common.MyLogger;
+import net.minecraft.client.renderer.EntityRenderer;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
@@ -8,6 +10,7 @@ import net.minecraftforge.fml.common.asm.transformers.deobf.FMLDeobfuscatingRema
 
 public class RenderClassAdapter extends ClassVisitor implements Opcodes {
 
+
 	public RenderClassAdapter(int api, ClassVisitor cv) {
 		super(api, cv);
 	}
@@ -15,9 +18,10 @@ public class RenderClassAdapter extends ClassVisitor implements Opcodes {
 	@Override
 	public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
 
-		String srgMethod = FMLDeobfuscatingRemapper.INSTANCE.mapMethodName(BB_Transformer.name1, name, desc);
+		String srgMethod = FMLDeobfuscatingRemapper.INSTANCE.mapMethodName(name, name, desc);
 		String srgDesc = FMLDeobfuscatingRemapper.INSTANCE.mapMethodDesc(desc);
-		if (("renderEntities".equals(srgMethod) || "func_147589_a".equals(srgMethod)) && "(Lnet/minecraft/entity/Entity;Lnet/minecraft/client/renderer/culling/ICamera;F)V".equals(srgDesc)) {
+		//MyLogger.warn("method : " + name + "  desc : " + srgDesc);
+		if (("renderEntities".equals(srgMethod) || "a".equals(srgMethod)) && "(Lnet/minecraft/entity/Entity;Lnet/minecraft/client/renderer/culling/ICamera;F)V".equals(srgDesc)) {
 			return new MethodAdapter(super.visitMethod(access, name, desc, signature, exceptions));
 		}
 		return super.visitMethod(access, name, desc, signature, exceptions);

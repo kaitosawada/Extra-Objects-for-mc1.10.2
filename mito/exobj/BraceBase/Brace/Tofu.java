@@ -2,16 +2,11 @@ package com.mito.exobj.BraceBase.Brace;
 
 import java.util.List;
 
-import com.mito.exobj.BraceBase.ExtraObject;
+import com.mito.exobj.client.render.model.BB_Model;
+import com.mito.exobj.client.render.model.IDrawable;
 import com.mito.exobj.common.Main;
-import com.mito.exobj.common.item.ItemBar;
-import com.mito.exobj.common.item.ItemBrace;
 import com.mito.exobj.common.main.ResisterItem;
-import com.mito.exobj.network.BB_PacketProcessor;
-import com.mito.exobj.network.BB_PacketProcessor.Mode;
-import com.mito.exobj.network.PacketHandler;
 import com.mito.exobj.utilities.Line;
-import com.mito.exobj.utilities.MitoMath;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -22,18 +17,15 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class Tofu extends ExtraObject {
+public class Tofu extends ModelObject {
 
 	//pos > cpoint > end
 	public AxisAlignedBB aabb = null;
-	public int color = 0;
-	public Block texture = Blocks.STONE;
 
 	public Tofu(World world) {
 		super(world);
@@ -64,7 +56,7 @@ public class Tofu extends ExtraObject {
 	@Override
 	public void readExtraObjectFromNBT(NBTTagCompound nbt) {
 		//this.line.readNBT(nbt);
-
+		super.readExtraObjectFromNBT(nbt);
 		double maxX = nbt.getDouble("maxX");
 		double maxY = nbt.getDouble("maxY");
 		double maxZ = nbt.getDouble("maxZ");
@@ -72,39 +64,26 @@ public class Tofu extends ExtraObject {
 		double minY = nbt.getDouble("minY");
 		double minZ = nbt.getDouble("minZ");
 		this.aabb = new AxisAlignedBB(minX, minY, minZ, maxX, maxY, maxZ);
-		this.texture = Block.getBlockById(nbt.getInteger("block"));
-		this.color = nbt.getInteger("color");
 
-	}
-
-	private void setVec3d(NBTTagCompound nbt, String name, Vec3d vec) {
-		nbt.setDouble(name + "X", vec.xCoord);
-		nbt.setDouble(name + "Y", vec.yCoord);
-		nbt.setDouble(name + "Z", vec.zCoord);
-	}
-
-	private Vec3d getVec3d(NBTTagCompound nbt, String name) {
-		return new Vec3d(nbt.getDouble(name + "X"), nbt.getDouble(name + "Y"), nbt.getDouble(name + "Z"));
 	}
 
 	@Override
 	public void writeExtraObjectToNBT(NBTTagCompound nbt) {
+		super.writeExtraObjectToNBT(nbt);
 		nbt.setDouble("maxX", aabb.maxX);
 		nbt.setDouble("maxY", aabb.maxY);
 		nbt.setDouble("maxZ", aabb.maxZ);
 		nbt.setDouble("minX", aabb.minX);
 		nbt.setDouble("minY", aabb.minY);
 		nbt.setDouble("minZ", aabb.minZ);
-		nbt.setInteger("block", Block.getIdFromBlock(texture));
-		nbt.setInteger("color", this.color);
 	}
 
 	@Override
 	public boolean interactWithAABB(AxisAlignedBB boundingBox) {
 		return aabb.intersectsWith(boundingBox);
 	}
-/*
-	@Override
+
+	/*@Override
 	public Vec3d interactWithLine(Vec3d s, Vec3d e) {
 		return aabb.calculateIntercept(s, e).hitVec;
 	}*/
@@ -116,22 +95,6 @@ public class Tofu extends ExtraObject {
 			return new Line(v.hitVec, v.hitVec);
 		}
 		return null;
-	}
-
-	public void breakBrace(EntityPlayer player) {
-		if (!player.worldObj.isRemote) {
-			if (!player.capabilities.isCreativeMode) {
-				this.dropItem();
-			}
-
-			this.setDead();
-			/*for (int n = 0; n < this.bindBraces.size(); n++) {
-				this.bindBraces.get(n).setDead();
-			}*/
-		} else {
-			//Main.proxy.playSound(new ResourceLocation(this.texture.stepSound.getBreakSound()), this.texture.stepSound.volume, this.texture.stepSound.frequency, (float) pos.xCoord, (float) pos.yCoord, (float) pos.zCoord);
-			Main.proxy.particle(this);
-		}
 	}
 
 	@Override
@@ -154,38 +117,13 @@ public class Tofu extends ExtraObject {
 		}
 	}
 
-	public boolean leftClick(EntityPlayer player, ItemStack itemstack) {
-		if (player.capabilities.isCreativeMode) {
-			this.breakBrace(player);
-			return true;
-		} else if (itemstack != null && itemstack.getItem() instanceof ItemBar) {
-			this.breakBrace(player);
-			return true;
-		}
-		return false;
-	}
-
-	public boolean rightClick(EntityPlayer player, Vec3d pos, ItemStack itemstack) {
-		if (itemstack != null && itemstack.getItem() instanceof ItemBar) {
-			this.breakBrace(player);
-			return true;
-		} else if (itemstack != null && Block.getBlockFromItem(itemstack.getItem()) != Blocks.AIR) {
-			this.texture = Block.getBlockFromItem(itemstack.getItem());
-			this.color = itemstack.getItemDamage() % 16;
-			dataworld.shouldUpdateRender = true;
-			PacketHandler.INSTANCE.sendToServer(new BB_PacketProcessor(Mode.SYNC, this));
-		}
-		return false;
-	}
-
 	public void dropItem() {
 
 		float f = this.random.nextFloat() * 0.2F + 0.1F;
 		float f1 = this.random.nextFloat() * 0.2F + 0.1F;
 		float f2 = this.random.nextFloat() * 0.2F + 0.1F;
 
-		ItemBrace brace = (ItemBrace) ResisterItem.ItemBrace;
-		ItemStack itemstack1 = new ItemStack(ResisterItem.ItemBrace, 1, this.color);
+		ItemStack itemstack1 = new ItemStack(ResisterItem.ItemTofu, 1, this.color);
 
 		NBTTagCompound nbt = itemstack1.getTagCompound();
 		itemstack1.setTagCompound(nbt);
@@ -203,38 +141,6 @@ public class Tofu extends ExtraObject {
 		worldObj.spawnEntityInWorld(entityitem);
 	}
 
-	/*public int getBrightnessForRender(float partialtick) {
-		int i = MathHelper.floor_double((this.pos.xCoord + this.end.xCoord) / 2);
-		int k = MathHelper.floor_double((this.pos.yCoord + this.end.yCoord) / 2);
-		int j = MathHelper.floor_double((this.pos.zCoord + this.end.zCoord) / 2);
-	
-		if (this.worldObj.blockExists(i, 0, j)) {
-			return this.worldObj.getLightBrightnessForSkyBlocks(i, k, j, 0);
-		} else {
-			return 0;
-		}
-	}*/
-
-	/*@SideOnly(Side.CLIENT)
-	@Override
-	public int getBrightnessForRender(float partialticks, double x, double y, double z) {
-		Vec3d v = this.getPos();
-		int i = MathHelper.floor_double(v.xCoord + x);
-		int j = MathHelper.floor_double(v.yCoord + y);
-		int k = MathHelper.floor_double(v.zCoord + z);
-
-		for (int n1 = 0; n1 < 6; n1++) {
-			if (!this.worldObj.getBlock(i + Facing.offsetsXForSide[n1], j + Facing.offsetsYForSide[n1], k + Facing.offsetsZForSide[n1]).isOpaqueCube()) {
-				return this.worldObj.getLightBrightnessForSkyBlocks(i + Facing.offsetsXForSide[n1], j + Facing.offsetsYForSide[n1], k + Facing.offsetsZForSide[n1], 0);
-			}
-		}
-		if (this.worldObj.blockExists(i, 0, k)) {
-			return this.worldObj.getLightBrightnessForSkyBlocks(i, j, k, 0);
-		} else {
-			return 0;
-		}
-	}*/
-
 	public AxisAlignedBB getBoundingBox() {
 		return aabb;
 	}
@@ -242,22 +148,6 @@ public class Tofu extends ExtraObject {
 	/*public void setRoll(double roll) {
 		this.rotationRoll = roll;
 		this.prevRotationRoll = roll;
-	}*/
-
-	/*public BezierCurve getBezierCurve() {
-		BezierCurve bc;
-		Vec3d va = this.end;
-		Vec3d vb = MitoMath.vectorPul(va, this.offCurvePoints2);
-		Vec3d vc = MitoMath.vectorPul(this.pos, this.offCurvePoints1);
-		Vec3d vd = this.pos;
-		if (this.offCurvePoints1.lengthVector() < 0.001) {
-			bc = new BezierCurve(vd, vb, va);
-		} else if (this.offCurvePoints2.lengthVector() < 0.001) {
-			bc = new BezierCurve(vd, vc, va);
-		} else {
-			bc = new BezierCurve(vd, vc, vb, va);
-		}
-		return bc;
 	}*/
 
 	public void addCoordinate(double x, double y, double z) {
@@ -308,6 +198,18 @@ public class Tofu extends ExtraObject {
 
 	public void snap(RayTraceResult mop, boolean b) {
 		//this.line.snap(mop, b);
+	}
+
+	@Override
+	public IDrawable getModel() {
+		updateModel();
+		return model;
+	}
+
+	@Override
+	public void updateModel() {
+		BB_Model ret = new BB_Model(this.aabb.offset(-pos.xCoord, -pos.yCoord, -pos.zCoord));
+		model = ret;
 	}
 
 }

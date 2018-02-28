@@ -1,5 +1,6 @@
-package com.mito.exobj.client;
+package com.mito.exobj.common.main;
 
+import com.mito.exobj.client.*;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
@@ -8,22 +9,18 @@ import org.lwjgl.input.Mouse;
 
 import com.mito.exobj.BraceBase.BB_RenderHandler;
 import com.mito.exobj.BraceBase.ExtraObject;
-import com.mito.exobj.client.render.TileObjectsRenderer;
 import com.mito.exobj.client.render.exorender.BB_TypeResister;
 import com.mito.exobj.common.Main;
-import com.mito.exobj.common.mitoCommonProxy;
-import com.mito.exobj.common.block.TileObjects;
+import com.mito.exobj.common.main.mitoCommonProxy;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.FMLClientHandler;
-import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 
 public class mitoClientProxy extends mitoCommonProxy {
@@ -135,4 +132,25 @@ public class mitoClientProxy extends mitoCommonProxy {
 	public void particle(ExtraObject brace) {
 		brace.particle();
 	}
+
+	/*@Override
+	public void setBrightness(CreateVertexBufferObject c, Vec3d pos) {
+		Vec3d pos1 = coord.add(pos);
+		if (Main.quality) {
+			World world = getClientWorld();
+			BlockPos.MutableBlockPos blockPos = new BlockPos.MutableBlockPos(MathHelper.floor_double(pos1.xCoord), 0, MathHelper.floor_double(pos1.zCoord));
+
+			if (world.isBlockLoaded(blockPos)) {
+				blockPos.setY(MathHelper.floor_double(pos1.zCoord));
+				c.setBrightness(world.getCombinedLight(blockPos, 0));
+			}
+		}
+	}
+
+	private Vec3d coord;
+
+	@Override
+	public void setCoord(Vec3d pos) {
+		coord = pos;
+	}*/
 }

@@ -46,9 +46,9 @@ public class BB_Model implements IDrawable {
 	public void drawWithVBO(CreateVertexBufferObject c, Vec3d offset, double roll, double pitch, double yaw, double size) {
 	}
 
-	public void drawVBOIIcon(CreateVertexBufferObject c, TextureAtlasSprite iicon) {
+	public void drawVBOIIcon(CreateVertexBufferObject c, TextureAtlasSprite iicon, Vec3d pos) {
 		for (BB_Polygon p : this.planes) {
-			p.drawVBOIIcon(c, iicon);
+			p.drawVBOIIcon(c, iicon, pos);
 		}
 	}
 

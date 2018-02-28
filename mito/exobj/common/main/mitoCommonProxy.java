@@ -1,5 +1,6 @@
-package com.mito.exobj.common;
+package com.mito.exobj.common.main;
 
+import com.mito.exobj.BraceBase.CreateVertexBufferObject;
 import com.mito.exobj.BraceBase.ExtraObject;
 import com.mito.exobj.client.BB_Key;
 import com.mito.exobj.client.BB_SelectedGroup;
@@ -66,5 +67,4 @@ public abstract class mitoCommonProxy {
 
 	public void particle(ExtraObject brace) {
 	}
-
 }

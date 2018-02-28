@@ -52,7 +52,6 @@ public class ModelObject extends ExtraObject {
 	public void readExtraObjectFromNBT(NBTTagCompound nbt) {
 		this.texture = Block.getBlockById(nbt.getInteger("block"));
 		this.color = nbt.getInteger("color");
-		BlockRendererDispatcher blockrender = Minecraft.getMinecraft().getBlockRendererDispatcher();
 
 	}
 
@@ -78,9 +77,7 @@ public class ModelObject extends ExtraObject {
 	}
 
 	@Override
-	public Line interactWithRay(Vec3d
-										set, Vec3d
-										end) {
+	public Line interactWithRay(Vec3d set, Vec3d end) {
 		return null;
 	}
 
@@ -129,7 +126,7 @@ public class ModelObject extends ExtraObject {
 		if (itemstack != null && itemstack.getItem() instanceof ItemBar) {
 			this.breakBrace(player);
 			return true;
-		} else if (Main.proxy.isShiftKeyDown() && itemstack != null && Block.getBlockFromItem(itemstack.getItem()) != Blocks.AIR) {
+		} else if (Main.proxy.isShiftKeyDown() && itemstack != null && Block.getBlockFromItem(itemstack.getItem()) != null) {
 			MyLogger.info(Block.getBlockFromItem(itemstack.getItem()).toString());
 			this.texture = Block.getBlockFromItem(itemstack.getItem());
 			this.color = itemstack.getItemDamage() % 16;

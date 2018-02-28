@@ -14,7 +14,7 @@ import net.minecraft.util.ResourceLocation;
 
 public class GuiGroupTransform extends GuiScreen {
 
-	static final ResourceLocation texture = new ResourceLocation("exobj:textures/gui/transform.png");
+	static final ResourceLocation texture = new ResourceLocation(Main.MODID + ":textures/gui/transform.png");
 	private BB_SelectedGroup sel = Main.proxy.sg;
 	protected int xSize = 176;
 	protected int ySize = 166;

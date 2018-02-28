@@ -1,7 +1,10 @@
 package com.mito.exobj.client.render.model;
 
 import com.mito.exobj.BraceBase.CreateVertexBufferObject;
+import com.mito.exobj.common.Main;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 
 public class Triangle {
@@ -13,7 +16,7 @@ public class Triangle {
 		this.vertexs[2] = v3;
 	}
 
-	public void drawIcon(CreateVertexBufferObject c, TextureAtlasSprite iicon, EnumFace face) {
+	public void drawIcon(CreateVertexBufferObject c, TextureAtlasSprite iicon, EnumFace face, Vec3d pos) {
 		if (iicon != null) {
 			double mu = iicon.getMinU();
 			double mv = iicon.getMinV();
@@ -25,8 +28,20 @@ public class Triangle {
 			double osv = Math.floor(minv + 0.0001);
 			Vertex[] va = face.getOrder(vertexs);
 			for (Vertex v : va) {
+				setBrightness(c, v.pos.add(pos));
 				c.setNormal(v.norm);
 				c.registVertexWithUV(v.pos, (v.u - osu) * du + mu, mv + (v.v - osv) * dv);
+			}
+		}
+	}
+
+	private void setBrightness(CreateVertexBufferObject c, Vec3d pos) {
+		if (Main.quality) {
+			BlockPos.MutableBlockPos blockPos = new BlockPos.MutableBlockPos(MathHelper.floor_double(pos.xCoord), 0, MathHelper.floor_double(pos.zCoord));
+
+			if (Main.proxy.getClientWorld().isBlockLoaded(blockPos)) {
+				blockPos.setY(MathHelper.floor_double(pos.yCoord));
+				c.setBrightness(Main.proxy.getClientWorld().getCombinedLight(blockPos, 0));
 			}
 		}
 	}

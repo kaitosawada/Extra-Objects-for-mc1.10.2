@@ -240,26 +240,11 @@ public class Brace extends ModelObject {
 		worldObj.spawnEntityInWorld(entityitem);
 	}
 
-	@SideOnly(Side.CLIENT)
+	/*@SideOnly(Side.CLIENT)
 	@Override
-	public float getBrightnessForRender(float partialticks, double x, double y, double z) {
-		if (this.worldObj != null) {
-			Vec3d v = this.getPos();
-			int i = MathHelper.floor_double(v.xCoord + x);
-			int j = MathHelper.floor_double(v.yCoord + y);
-			int k = MathHelper.floor_double(v.zCoord + z);
-
-			for (EnumFacing f : EnumFacing.values()) {
-				BlockPos pos = new BlockPos(i + f.getFrontOffsetX(), j + f.getFrontOffsetY(), k + f.getFrontOffsetZ());
-				if (!this.worldObj.getBlockState(pos).isOpaqueCube()) {
-					return this.worldObj.getLightBrightness(pos);
-				}
-			}
-		}
-
-		return 0;
-
-	}
+	public int getBrightnessForRender(float i) {
+		return getBrightnessForRender(i, this.getPos()pos.xCoord, pos.yCoord, pos.zCoord);
+	}*/
 
 	public AxisAlignedBB getBoundingBox() {
 		if (line == null) {
@@ -330,6 +315,7 @@ public class Brace extends ModelObject {
 		return model;
 	}
 
+	@Override
 	public void updateModel() {
 		BB_ModelGroup ret = new BB_ModelGroup();
 		IJoint ij = BB_TypeResister.getJoint(this.joint);

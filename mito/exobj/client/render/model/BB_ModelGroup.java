@@ -30,9 +30,9 @@ public class BB_ModelGroup extends BB_Model {
 	}
 
 	@Override
-	public void drawVBOIIcon(CreateVertexBufferObject c, TextureAtlasSprite iicon) {
+	public void drawVBOIIcon(CreateVertexBufferObject c, TextureAtlasSprite iicon, Vec3d pos) {
 		for (IDrawable m : models) {
-			m.drawVBOIIcon(c, iicon);
+			m.drawVBOIIcon(c, iicon, pos);
 		}
 	}
 

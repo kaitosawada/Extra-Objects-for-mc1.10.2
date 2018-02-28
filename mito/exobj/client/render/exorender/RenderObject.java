@@ -3,18 +3,17 @@ package com.mito.exobj.client.render.exorender;
 import com.mito.exobj.BraceBase.*;
 import com.mito.exobj.BraceBase.Brace.ModelObject;
 import com.mito.exobj.client.BraceHighLightHandler;
-import com.mito.exobj.client.mitoClientProxy;
+import com.mito.exobj.common.main.mitoClientProxy;
 import com.mito.exobj.client.render.BB_Render;
 import com.mito.exobj.client.render.model.IDrawable;
 import com.mito.exobj.common.Main;
-import net.minecraft.block.material.MapColor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockRendererDispatcher;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
 
-public class RenderBrace extends BB_Render {
+public class RenderObject extends BB_Render {
 
 	BlockRendererDispatcher blockrender = Minecraft.getMinecraft().getBlockRendererDispatcher();
 
@@ -26,8 +25,8 @@ public class RenderBrace extends BB_Render {
 		if (data.key == null || !data.key.equals(base)) {
 			data.buffer.delete();
 			CreateVertexBufferObject c = CreateVertexBufferObject.INSTANCE;
-			c.beginRegist(GL15.GL_STATIC_DRAW, GL11.GL_LINES);
-			c.setColor(1.0F, 1.0F, 1.0F, 1.0F);
+			c.beginRegist(GL15.GL_STATIC_DRAW, GL11.GL_LINES)
+					.setColor(1.0F, 1.0F, 1.0F, 1.0F);
 			IDrawable model = brace.getModel();
 			c.translate(brace.getPos());
 			if (model != null)
@@ -49,19 +48,18 @@ public class RenderBrace extends BB_Render {
 	}
 
 	public void updateRender(CreateVertexBufferObject c, ExtraObject base) {
-		//MyLogger.info("a");
-		float i = base.getBrightnessForRender(0);
-
 		ModelObject brace = (ModelObject) base;
-		MapColor j = brace.texture.getMapColor(brace.texture.getStateFromMeta(brace.color));
+		//MapColor j = brace.texture.getMapColor(brace.texture.getStateFromMeta(brace.color));
 		//c.setColor(j.colorIndex);
-		c.setColor(1.0f, 1.0f, 1.0f, 1.0f);
-		TextureAtlasSprite tas = blockrender.getModelForState(brace.texture.getStateFromMeta(brace.color)).getParticleTexture();;
+		c.setBrightness(base.getBrightnessForRender(0.0f));
+		c.setColor(1.0F, 1.0F, 1.0F, 1.0F);
+		TextureAtlasSprite tas = blockrender.getModelForState(brace.texture.getStateFromMeta(brace.color)).getParticleTexture();
 		c.pushMatrix();
 		IDrawable model = brace.getModel();
 		c.translate(brace.getPos());
+		//Main.proxy.setCoord(base.getPos());
 		if (model != null)
-			model.drawVBOIIcon(c, tas);
+			model.drawVBOIIcon(c, tas, base.getPos());
 		c.popMatrix();
 
 	}

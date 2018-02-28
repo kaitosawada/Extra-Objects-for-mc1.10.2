@@ -1,12 +1,18 @@
 package com.mito.exobj.BraceBase;
 
+import java.lang.reflect.Field;
 import java.util.Iterator;
 
+import com.mito.exobj.common.MyLogger;
+import com.mito.exobj.common.main.ConfigManager;
 import com.mito.exobj.common.Main;
 import com.mito.exobj.network.BB_PacketProcessor;
 import com.mito.exobj.network.BB_PacketProcessor.Mode;
 import com.mito.exobj.network.PacketHandler;
 
+import net.minecraft.client.renderer.chunk.RenderChunk;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.ChunkCache;
 import net.minecraft.world.World;
 import net.minecraftforge.event.world.ChunkEvent;
 import net.minecraftforge.event.world.WorldEvent;
@@ -23,6 +29,20 @@ public class LoadClientWorldHandler {
 	public LoadClientWorldHandler() {
 	}
 
+	public static void onChunkUpdate(World world, BlockPos pos) {
+		//MyLogger.info("m");
+		int i = pos.getX();
+		int j = pos.getY();
+		int k = pos.getZ();
+		if (!BB_DataLists.existChunkData(Main.proxy.getClientWorld(), i / 16, k / 16)) {
+			return;
+		}
+		BB_DataChunk ret = BB_DataLists.getChunkDataNew(world, i / 16, k / 16);
+		if (ret != null) {
+			ret.updateRenderer();
+		}
+	}
+
 	public void onUnloadWorld(WorldEvent.Unload e) {
 		this.data = null;
 		Main.proxy.sg.init();
@@ -30,6 +50,7 @@ public class LoadClientWorldHandler {
 
 	public void onLoadWorld(WorldEvent.Load e) {
 		this.data = new BB_DataWorld(e.getWorld());
+		Main.quality = ConfigManager.quality();
 	}
 
 	public void onUpdate(TickEvent.PlayerTickEvent e) {

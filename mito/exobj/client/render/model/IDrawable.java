@@ -12,7 +12,7 @@ public interface IDrawable {
 
 	void drawWithVBO(CreateVertexBufferObject c, Vec3d offset, double roll, double pitch, double yaw, double size);
 
-	void drawVBOIIcon(CreateVertexBufferObject c, TextureAtlasSprite iicon);
+	void drawVBOIIcon(CreateVertexBufferObject c, TextureAtlasSprite iicon, Vec3d pos);
 
 	void drawLine(CreateVertexBufferObject c);
 

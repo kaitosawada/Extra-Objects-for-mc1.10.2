@@ -36,7 +36,7 @@ public class CreateVertexBufferObject {
 
 	//usage : glBufferData
 	//mode : gldrawMode
-	public void beginRegist(int usage, int mode) {
+	public CreateVertexBufferObject beginRegist(int usage, int mode) {
 		this.p = new VBOHandler();
 		this.size = 0;
 		this.vertexDataList.clear();
@@ -48,6 +48,7 @@ public class CreateVertexBufferObject {
 		this.p.mode = mode;
 		this.scale = 1;
 		trans = new Mat4();
+		return this;
 	}
 
 	public VBOHandler end() {
@@ -80,7 +81,7 @@ public class CreateVertexBufferObject {
 		return this.p;
 	}
 
-	public void registVertex(float f, float g, float h) {
+	public CreateVertexBufferObject registVertex(float f, float g, float h) {
 		float n1 = this.normalArray[0];
 		float n2 = this.normalArray[1];
 		float n3 = this.normalArray[2];
@@ -103,13 +104,14 @@ public class CreateVertexBufferObject {
 		vertexDataList.addAll(list);
 		brightnessDataList.add(this.brightnessArray[0]);
 		brightnessDataList.add(this.brightnessArray[1]);
+		return this;
 	}
 
-	public void registVertex(double f, double g, double h) {
-		registVertex((float) f, (float) g, (float) h);
+	public CreateVertexBufferObject registVertex(double f, double g, double h) {
+		return registVertex((float) f, (float) g, (float) h);
 	}
 
-	public void registVertexWithUV(float f, float g, float h, float i, float j) {
+	public CreateVertexBufferObject registVertexWithUV(float f, float g, float h, float i, float j) {
 		float n1 = this.normalArray[0];
 		float n2 = this.normalArray[1];
 		float n3 = this.normalArray[2];
@@ -131,119 +133,136 @@ public class CreateVertexBufferObject {
 		vertexDataList.addAll(list);
 		brightnessDataList.add(this.brightnessArray[0]);
 		brightnessDataList.add(this.brightnessArray[1]);
+		return this;
 	}
 
-	public void registVertexWithUV(double f, double g, double h, double i, double j) {
-		registVertexWithUV((float) f, (float) g, (float) h, (float) i, (float) j);
+	public CreateVertexBufferObject registVertexWithUV(double f, double g, double h, double i, double j) {
+		return registVertexWithUV((float) f, (float) g, (float) h, (float) i, (float) j);
 	}
 
-	public void registVertexWithUV(Vec3d vec, double u, double v) {
-		registVertexWithUV(vec.xCoord, vec.yCoord, vec.zCoord, u, v);
+	public CreateVertexBufferObject registVertexWithUV(Vec3d vec, double u, double v) {
+		return registVertexWithUV(vec.xCoord, vec.yCoord, vec.zCoord, u, v);
 	}
 
-	public void registVertexWithUV(Vertex v) {
-		registVertexWithUV(v.pos, v.u, v.v);
+	public CreateVertexBufferObject registVertexWithUV(Vertex v) {
+		return registVertexWithUV(v.pos, v.u, v.v);
 	}
 
-	public void setBrightness(float f, float g) {
+	public CreateVertexBufferObject setBrightness(float f, float g) {
 		this.hasBrightness = true;
 		this.brightnessArray[0] = f;
 		this.brightnessArray[1] = g;
+		return this;
 	}
 
-	public void setBrightness(int i) {
+	public CreateVertexBufferObject setBrightness(int i) {
 		int j = i % 65536;
 		int k = i / 65536;
 		this.hasBrightness = true;
 		this.brightnessArray[0] = (float) j;
 		this.brightnessArray[1] = (float) k;
+		return this;
 	}
 
-	public void setTextureUV(float f, float g) {
+	public CreateVertexBufferObject setTextureUV(float f, float g) {
 		this.textureArray[0] = f;
 		this.textureArray[1] = g;
+		return this;
 	}
 
-	public void setNormal(float f, float g, float h) {
+	public CreateVertexBufferObject setNormal(float f, float g, float h) {
 		this.normalArray[0] = f;
 		this.normalArray[1] = g;
 		this.normalArray[2] = h;
+		return this;
 	}
 
-	public void setNormal(double f, double g, double h) {
+	public CreateVertexBufferObject setNormal(double f, double g, double h) {
 		this.normalArray[0] = (float) f;
 		this.normalArray[1] = (float) g;
 		this.normalArray[2] = (float) h;
+		return this;
 	}
 
-	public void setColor(float f, float g, float h, float i) {
+	public CreateVertexBufferObject setColor(float f, float g, float h, float i) {
 		this.colorArray[0] = f;
 		this.colorArray[1] = g;
 		this.colorArray[2] = h;
 		this.colorArray[3] = i;
+		return this;
 	}
 
-	public void setColor(float f, float g, float h) {
+	public CreateVertexBufferObject setColor(float f, float g, float h) {
 		this.colorArray[0] = f;
 		this.colorArray[1] = g;
 		this.colorArray[2] = h;
 		this.colorArray[3] = 1.0f;
+		return this;
 	}
 
-	public void setColor(int j) {
+	public CreateVertexBufferObject setColor(int j) {
 		float f = (float) (j >> 16 & 255) / 255.0F;
 		float g = (float) (j >> 8 & 255) / 255.0F;
 		float h = (float) (j & 255) / 255.0F;
-		setColor(f, g, h);
+		return setColor(f, g, h);
 	}
 
-	public void setScale(double size) {
+	public CreateVertexBufferObject setScale(double size) {
 		this.scale = size;
-
+		return this;
 	}
 
-	public void rpyRotate(double r, double p, double y) {
+	public CreateVertexBufferObject rpyRotate(double r, double p, double y) {
 		trans.rpyRotation(r, p, y);
+		return this;
 	}
 
-	public void translate(double x, double y, double z) {
+	public CreateVertexBufferObject translate(double x, double y, double z) {
 		trans.translate(x, y, z);
+		return this;
 	}
 
-	public void translate(Vec3d v) {
+	public CreateVertexBufferObject translate(Vec3d v) {
 		trans.translate(v);
+		return this;
 	}
 
-	public void scale(double x, double y, double z) {
+	public CreateVertexBufferObject scale(double x, double y, double z) {
 		trans.scale(x, y, z);
+		return this;
 	}
 
-	public void rotate(double a, double x, double y, double z) {
+	public CreateVertexBufferObject rotate(double a, double x, double y, double z) {
 		trans.rotate(a, x, y, z);
+		return this;
 	}
 
-	public void rotate(double a, Vec3d v) {
+	public CreateVertexBufferObject rotate(double a, Vec3d v) {
 		trans.rotate(a, v);
+		return this;
 	}
 
-	public void setNormal(Vec3d v) {
-		this.setNormal(v.xCoord, v.yCoord, v.zCoord);
+	public CreateVertexBufferObject setNormal(Vec3d v) {
+		return setNormal(v.xCoord, v.yCoord, v.zCoord);
 	}
 
-	public void popMatrix() {
+	public CreateVertexBufferObject popMatrix() {
 		int n = stack.size() - 1;
 		if (n >= 0) {
 			trans = stack.get(n);
 			stack.remove(n);
 		}
+		return this;
 	}
 
-	public void pushMatrix() {
+	public CreateVertexBufferObject pushMatrix() {
 		stack.add(trans.copy());
+		return this;
 	}
 
-	public void transform(Mat4 rotationMatrix) {
+	public CreateVertexBufferObject transform(Mat4 rotationMatrix) {
 		trans.transMat(rotationMatrix);
+		return this;
 	}
 
 }

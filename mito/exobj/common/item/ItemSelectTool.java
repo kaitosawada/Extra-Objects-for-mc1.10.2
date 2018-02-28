@@ -32,7 +32,7 @@ public class ItemSelectTool extends ItemBraceBase {
 	public ItemSelectTool() {
 		super();
 		//this.setTextureName("exobj:select");
-		this.setMaxDamage(0);
+		//this.setMaxDamage(0);
 		this.setHasSubtypes(true);
 	}
 

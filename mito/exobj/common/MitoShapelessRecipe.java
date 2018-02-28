@@ -47,7 +47,7 @@ public class MitoShapelessRecipe implements IRecipe {
 						return false;
 					}
 					dyeNum++;
-				} else if (Block.getBlockFromItem(current.getItem()) != Blocks.AIR) {
+				} else if (Block.getBlockFromItem(current.getItem()) != null) {
 					if (dyeNum != 0) {
 						return false;
 					}
@@ -96,7 +96,7 @@ public class MitoShapelessRecipe implements IRecipe {
 						place = h * 3 + w;
 					} else if (inv.getStackInRowAndColumn(h, w).getItem() == Items.DYE) {
 						dye = brace.getColor(itemstack);
-					} else if (Block.getBlockFromItem(itemstack.getItem()) != Blocks.AIR) {
+					} else if (Block.getBlockFromItem(itemstack.getItem()) != null) {
 						MyLogger.info(Block.getBlockFromItem(itemstack.getItem()).getLocalizedName());
 						material = Block.getBlockFromItem(itemstack.getItem());
 						materialColor = itemstack.getItemDamage();

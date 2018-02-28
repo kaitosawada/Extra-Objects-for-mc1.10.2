@@ -13,6 +13,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -21,7 +22,7 @@ import javax.annotation.Nullable;
 
 public class BraceCoreHooks {
 
-	public static void getCollisionHook(World world, List collidingBoundingBoxes, @Nullable Entity aabb){
+	public static void getCollisionHook(World world, List collidingBoundingBoxes, @Nullable Entity aabb) {
 		MyLogger.info("aaa");
 	}
 
@@ -45,9 +46,11 @@ public class BraceCoreHooks {
 				Vec3d end = start.addVector(Vec3d1.xCoord * d0, Vec3d1.yCoord * d0, Vec3d1.zCoord * d0);
 				RayTraceResult m2 = rayTraceBrace(player, start, end, partialticks);
 				if (m2 != null && pre != null) {
-					if (!(MitoMath.subAbs(start, pre.hitVec) + 0.05 < MitoMath.subAbs(start, m2.hitVec) && !(player.worldObj.isAirBlock(pre.getBlockPos())))) {
-						mc.objectMouseOver = m2;
-					}
+					BlockPos blockPos = pre.getBlockPos();
+					if (blockPos != null)
+						if (!(MitoMath.subAbs(start, pre.hitVec) + 0.05 < MitoMath.subAbs(start, m2.hitVec) && !(player.worldObj.isAirBlock(blockPos)))) {
+							mc.objectMouseOver = m2;
+						}
 				}
 			}
 		}

@@ -77,8 +77,6 @@ public class ItemRuler extends ItemSet {
 	}
 
 	public void onActiveClick(World world, EntityPlayer player, ItemStack itemstack, RayTraceResult movingOP, Vec3d set, Vec3d end, NBTTagCompound nbt) {
-
-		int divine = this.getDiv(itemstack);
 		GuideBrace guide = new GuideBrace(world, set, end, 0.2, player);
 		guide.addToWorld();
 

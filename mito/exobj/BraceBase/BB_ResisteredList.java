@@ -9,9 +9,8 @@ import org.apache.logging.log4j.Level;
 import com.mito.exobj.BraceBase.Brace.Brace;
 import com.mito.exobj.BraceBase.Brace.GuideBrace;
 import com.mito.exobj.BraceBase.Brace.Tofu;
-import com.mito.exobj.client.render.exorender.RenderBrace;
+import com.mito.exobj.client.render.exorender.RenderObject;
 import com.mito.exobj.client.render.exorender.RenderGuideBrace;
-import com.mito.exobj.client.render.exorender.RenderTofu;
 import com.mito.exobj.common.MyLogger;
 import com.mito.exobj.network.BB_PacketProcessor;
 import com.mito.exobj.network.BB_PacketProcessor.Mode;
@@ -122,9 +121,9 @@ public class BB_ResisteredList {
 	}
 
 	static {
-		addMapping(Brace.class, "Brace", nextID++, new RenderBrace());
+		addMapping(Brace.class, "Brace", nextID++, new RenderObject());
 		addMapping(GuideBrace.class, "GuideBrace", nextID++, new RenderGuideBrace());
-		addMapping(Tofu.class, "Tofu", nextID++, new RenderTofu());
+		addMapping(Tofu.class, "Tofu", nextID++, new RenderObject());
 	}
 
 	public static ExtraObject syncBraceBaseFromNBT(NBTTagCompound nbt, World world, int id) {

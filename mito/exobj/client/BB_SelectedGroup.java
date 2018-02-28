@@ -2,6 +2,7 @@ package com.mito.exobj.client;
 
 import java.util.List;
 
+import com.mito.exobj.common.main.mitoClientProxy;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
 

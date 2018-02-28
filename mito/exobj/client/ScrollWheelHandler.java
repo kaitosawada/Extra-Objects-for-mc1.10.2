@@ -1,6 +1,7 @@
 package com.mito.exobj.client;
 
 import com.mito.exobj.common.item.ItemBraceBase;
+import com.mito.exobj.common.main.mitoClientProxy;
 import com.mito.exobj.network.ItemBarPacketProcessor;
 import com.mito.exobj.network.PacketHandler;
 

@@ -1,4 +1,4 @@
-package com.mito.exobj.common;
+package com.mito.exobj.common.main;
 
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.relauncher.FMLInjectionData;
@@ -35,12 +35,24 @@ public class ConfigManager {
 	static public void writeData(String s){
 		try {
 			File data = new File((File) FMLInjectionData.data()[6], "data.txt");
-			PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(data)));
+			PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(data, true)));
 			pw.println(s);
 			pw.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
+	}
+
+	public static boolean quality() {
+		boolean debug;
+		Configuration cfg = getConfigFile();
+		try {
+			cfg.load();
+			debug = cfg.getBoolean("draw_quality", "mode", true, "high draw quality (high: true)");
+		} finally {
+			cfg.save();
+		}
+		return debug;
 	}
 }

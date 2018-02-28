@@ -1,5 +1,6 @@
 package com.mito.exobj.asm;
 
+import com.mito.exobj.common.MyLogger;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
@@ -14,10 +15,10 @@ public class MouseOverClassAdapter extends ClassVisitor implements Opcodes {
 
 	@Override
 	public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
-
-		String srgMethod = FMLDeobfuscatingRemapper.INSTANCE.mapMethodName(BB_Transformer.name1, name, desc);
+		String srgMethod = FMLDeobfuscatingRemapper.INSTANCE.mapMethodName(name, name, desc);
 		String srgDesc = FMLDeobfuscatingRemapper.INSTANCE.mapMethodDesc(desc);
-		if (("getMouseOver".equals(srgMethod) || "func_78473_a".equals(srgMethod)) && "(F)V".equals(srgDesc)) {
+		//MyLogger.warn("method : " + srgMethod + "  desc : " + srgDesc);
+		if (("getMouseOver".equals(srgMethod) || "a".equals(srgMethod)) && "(F)V".equals(srgDesc)) {
 			return new MethodAdapter(super.visitMethod(access, name, desc, signature, exceptions));
 		}
 		return super.visitMethod(access, name, desc, signature, exceptions);
